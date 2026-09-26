@@ -1,0 +1,21 @@
+# Binaries
+bin/
+tools/site-cli/site-cli
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Build output
+dist/
+
+# Test artifacts
+*.test
+*.out
+
+# OS & Editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~

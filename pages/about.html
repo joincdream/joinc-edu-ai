@@ -1,0 +1,403 @@
+{{ define "content" }}
+<div class="max-w-5xl mx-auto py-4 space-y-12">
+
+  <!-- 1. Hero Profile & Vision Banner -->
+  <section class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-slate-950/80 border border-slate-800 p-8 sm:p-10 shadow-2xl backdrop-blur-sm">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 space-y-6">
+      <!-- Title Badges -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">
+          Technical Head of Product
+        </span>
+        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+          AI Solutions Architect
+        </span>
+        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono">
+          25+ Years Experience
+        </span>
+      </div>
+
+      <!-- Main Name & Subtitle -->
+      <div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          윤상배 <span class="text-xl sm:text-2xl font-medium text-slate-400 ml-2">Yun Sangbae</span>
+        </h1>
+        <p class="text-sm sm:text-base text-slate-400 mt-2 font-mono">
+          AXP Lead &middot; AI Agent Orchestrator &middot; Cloud/DevOps Architect &middot; Hands-on Prototyper
+        </p>
+      </div>
+
+      <!-- Executive Vision Quote Callout -->
+      <div class="relative rounded-2xl bg-slate-950/70 border-l-4 border-blue-500 p-5 sm:p-6 text-slate-200 text-sm sm:text-base leading-relaxed font-medium">
+        &ldquo;25년+ 소프트웨어 엔지니어링 및 클라우드/DevOps 깊이를 바탕으로, AI 튜터/에이전트 오케스트레이션 기반의 초개인화 학습 경험 플랫폼(AXP) 비전을 0 to 1 프로덕트로 뚫어내고, 1인 초고속 Hands-on 프로토타이핑부터 10인+ 기술 조직 리딩 및 B2B AX 비즈니스 연계까지 총괄하는 Technical Head of Product입니다.&rdquo;
+      </div>
+
+      <!-- Quick Action Social Links -->
+      <div class="flex flex-wrap items-center gap-3 pt-2">
+        <a href="mailto:yundream@gmail.com" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors">
+          <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          yundream@gmail.com
+        </a>
+        <a href="https://github.com/joincdream" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors">
+          <svg class="w-4 h-4 text-slate-300" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub (joincdream)
+        </a>
+        <a href="https://linkedin.com/in/yundream" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors">
+          <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://www.joinc.co.kr" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-blue-950/80 hover:bg-blue-900 text-blue-300 border border-blue-800/60 transition-colors">
+          🌐 Tech Blog (Joinc)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Key Impact Metrics (4-Grid KPI Cards) -->
+  <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 shadow-lg">
+      <div class="text-3xl sm:text-4xl font-extrabold text-blue-400 font-mono tracking-tight">25+</div>
+      <div class="text-sm font-semibold text-slate-200 mt-1">Years Engineering</div>
+      <div class="text-xs text-slate-400 mt-1 leading-snug">C/C++, 클라우드/DevOps부터 최신 생성형 AI 에이전트까지</div>
+    </div>
+    <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 shadow-lg">
+      <div class="text-3xl sm:text-4xl font-extrabold text-indigo-400 font-mono tracking-tight">0 to 1</div>
+      <div class="text-sm font-semibold text-slate-200 mt-1">AXP Product Lead</div>
+      <div class="text-xs text-slate-400 mt-1 leading-snug">AI 튜터 & 에이전트 오케스트레이션 기반 학습 경험 설계</div>
+    </div>
+    <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 shadow-lg">
+      <div class="text-3xl sm:text-4xl font-extrabold text-emerald-400 font-mono tracking-tight">10+</div>
+      <div class="text-sm font-semibold text-slate-200 mt-1">Team Leadership</div>
+      <div class="text-xs text-slate-400 mt-1 leading-snug">1인에서 7인 AI 조직 빌딩 및 10인+ 개발실/DevOps 총괄</div>
+    </div>
+    <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 shadow-lg">
+      <div class="text-3xl sm:text-4xl font-extrabold text-amber-400 font-mono tracking-tight">CES Award</div>
+      <div class="text-sm font-semibold text-slate-200 mt-1">Global Recognition</div>
+      <div class="text-xs text-slate-400 mt-1 leading-snug">LG 홈챗 대화형 스마트홈 글로벌 Choice Award 2개 부문 수상</div>
+    </div>
+  </section>
+
+  <!-- 3. Professional Summary (4대 리더십 축) -->
+  <section class="space-y-4">
+    <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+      <span class="text-blue-400">💡</span> Professional Summary
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          AXP 0 to 1 총괄 & 초개인화 학습 경험 설계
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          단순 LMS를 넘어 멀티 AI 에이전트 오케스트레이션 및 유저 학습 데이터 분석 엔진을 제품에 이식하여 "사람들이 배우는 방식을 재설계"합니다. 요구사항 정의와 사용자 여정(User Journey) 설계부터 AI 파이프라인 구축, 유저 로그 분석 기반의 몰입/성장 피드백 룹(Feedback Loop) 설계를 총괄합니다.
+        </p>
+      </div>
+
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+          1인 AI 초고속 Hands-on 프로토타이핑
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          오픈소스 <strong>HarnessHub</strong> 프로젝트를 통해 SDLC 기반 에이전트 제어 및 Visual Workflow DAG 대시보드(Go/Vue 3/TypeScript/Docker)를 1인 프로토타이핑으로 0 to 1 직접 구현하며 AI 툴 기반의 압도적인 딜리버리 역량을 증명했습니다.
+        </p>
+      </div>
+
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          생성형 AI 솔루션 PO & 10인+ 기술 조직 리딩
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          CloIT에서 1인으로 시작해 7인 규모의 AI 전담 조직을 직접 빌딩하고, 미디어 생성 플랫폼의 PO이자 메인 아키텍트로 Artifact Centric Workflow 중심의 풀스택 구현과 릴리즈를 완수했습니다. 미디움 개발실장, 한화생명 PM을 포함해 10인 이상 조직 관리 역량을 갖추고 있습니다.
+        </p>
+      </div>
+
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          경영진 연계 B2B AX 비즈니스 추진 & 기술-사업 통섭
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          수십 건의 대기업/기관(한화생명, 퍼시스, 국민연금 등) Presales 및 PoC를 주도하여 비즈니스 가치를 정량적 ROI로 입증했습니다. 경영진의 AXP 비즈니스 모델(BM)을 개발진이 이해할 수 있는 현실적 기술 로드맵으로 제품화합니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Core Competencies (5대 전문 역량 칩 그룹) -->
+  <section class="space-y-4">
+    <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+      <span class="text-indigo-400">🛠️</span> Core Competencies
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      
+      <!-- Product & AI Architecture -->
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 space-y-3">
+        <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center justify-between">
+          <span>Product &amp; AI Architecture</span>
+          <span class="text-xs text-blue-400 font-mono">0 to 1 PO</span>
+        </h3>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-950/60 text-blue-300 border border-blue-800/40">AXP 비전 수립</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-950/60 text-blue-300 border border-blue-800/40">User Journey 설계</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-950/60 text-blue-300 border border-blue-800/40">AI Agent Orchestration</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-950/60 text-blue-300 border border-blue-800/40">RAG 하이브리드 색인</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-950/60 text-blue-300 border border-blue-800/40">Knowledge Graph</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-blue-950/60 text-blue-300 border border-blue-800/40">Artifact Centric UI/UX</span>
+        </div>
+      </div>
+
+      <!-- Tech Stack & Hands-on -->
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 space-y-3">
+        <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center justify-between">
+          <span>Tech Stack &amp; Hands-on</span>
+          <span class="text-xs text-indigo-400 font-mono">Full-Stack</span>
+        </h3>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">Go (Golang)</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">Python</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">TypeScript</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">React / Next.js</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">FastAPI</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">OpenAPI 3.0</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-800/40">Tailwind CSS</span>
+        </div>
+      </div>
+
+      <!-- Cloud & MLOps / DevOps -->
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 space-y-3">
+        <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center justify-between">
+          <span>Cloud &amp; MLOps / DevOps</span>
+          <span class="text-xs text-emerald-400 font-mono">Infrastructure</span>
+        </h3>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">AWS</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">GCP</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">Docker</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">Kubernetes</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">Terraform (IaC)</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">GitHub Actions</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">Prometheus/Grafana</span>
+        </div>
+      </div>
+
+      <!-- Data & Analytics + Leadership -->
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 space-y-3">
+        <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider flex items-center justify-between">
+          <span>Data, Analytics &amp; Leadership</span>
+          <span class="text-xs text-amber-400 font-mono">Impact</span>
+        </h3>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-amber-950/60 text-amber-300 border border-amber-800/40">PostgreSQL / pgvector</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-amber-950/60 text-amber-300 border border-amber-800/40">Elasticsearch</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-amber-950/60 text-amber-300 border border-amber-800/40">Kafka / ETL</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-amber-950/60 text-amber-300 border border-amber-800/40">10인+ 조직 리딩</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-amber-950/60 text-amber-300 border border-amber-800/40">B2B Presales / PoC</span>
+          <span class="px-2.5 py-1 text-xs rounded-lg bg-amber-950/60 text-amber-300 border border-amber-800/40">SAFe Agile</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. Featured Open-Source Showcase: HarnessHub -->
+  <section class="bg-gradient-to-r from-slate-900/90 via-blue-950/30 to-slate-900/90 border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-xl space-y-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <div>
+        <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Featured Open-Source Project</span>
+        <h3 class="text-2xl font-extrabold text-white tracking-tight mt-1">
+          HarnessHub &amp; create-harness-app
+        </h3>
+      </div>
+      <a href="https://github.com/joincdream/harness-hub" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20 transition-all self-start sm:self-auto">
+        <span>GitHub Repository</span> &rarr;
+      </a>
+    </div>
+
+    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+      AI 에이전트의 비결정성(Non-determinism)과 기술 부채를 통제하기 위한 선언적 SDLC 청사진 배포 레지스트리 및 CLI/웹 컨트롤 타워입니다. AI 코딩 도구를 프로덕션 수준의 안전한 가드레일 안에 가두는 아키텍처를 0 to 1 직접 설계·구현했습니다.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs text-slate-300">
+      <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-800">
+        <strong class="text-white block mb-1">📊 DAG Visualizer</strong>
+        Artifact 기반 실행 단계 및 학습/개발 워크플로우 시각화
+      </div>
+      <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-800">
+        <strong class="text-white block mb-1">⚡ Go Native Full-Stack</strong>
+        Go REST API + Vue 3/TS 대시보드 1인 초고속 프로토타이핑
+      </div>
+      <div class="bg-slate-900/80 rounded-xl p-3 border border-slate-800">
+        <strong class="text-white block mb-1">📦 CLI Starter Kit</strong>
+        create-harness-app 통한 안전한 AI 협업 청사진 배포
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Visual Career Timeline (세로 타임라인) -->
+  <section class="space-y-6">
+    <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+      <span class="text-emerald-400">💼</span> Professional Experience
+    </h2>
+
+    <div class="relative border-l-2 border-slate-800 ml-4 sm:ml-6 pl-6 sm:pl-8 space-y-10">
+
+      <!-- CloIT -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-950 group-hover:scale-125 transition-transform shadow-lg shadow-blue-500/50"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">CloIT (클로잇)</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30 font-mono">
+            2024.01 ~ 현재
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-3">
+          Generative AI Solutions Architect / Tech Lead (AI 서비스 팀장)
+        </div>
+        <ul class="text-xs sm:text-sm text-slate-300 space-y-2 list-disc list-outside ml-4 leading-relaxed">
+          <li><strong>AI 전담 조직 빌딩 &amp; PM</strong>: 1인으로 시작해 7인 규모 전담 조직 구축, 페르소나 분석부터 프로덕션 배포까지 엔드투엔드 총괄.</li>
+          <li><strong>마케팅 영상/이미지 생성 플랫폼 (PO)</strong>: Artifact Centric Workflow 중심 UI/UX 및 백엔드(FastAPI/Go) API 직접 설계·개발.</li>
+          <li><strong>퍼시스 AI DAM 시스템 구축 (Production)</strong>: VLM 기반 SKU 자동 라벨링 및 유사도 검색으로 디지털 자산 관리 자동화.</li>
+          <li><strong>국내 제약·바이오 지주사 RAG 구축</strong>: 하이브리드 색인(Hybrid Indexing) 및 임베딩 튜닝으로 정보 탐색 정확도 90% 이상 극대화.</li>
+          <li><strong>온톨로지 지식 그래프(Knowledge Graph) PoC 리딩</strong>: 국민연금 투자 분석 및 건설 규제 대응 RAG 아키텍처 설계.</li>
+          <li><strong>수십 건의 B2B AI Presales &amp; PoC</strong>: 10여 건 이상의 엔터프라이즈 과제 아키텍처 총괄 및 1개월 내 고속 딜리버리.</li>
+        </ul>
+      </div>
+
+      <!-- AWS -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">Amazon Web Services (AWS)</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+            2023.06 ~ 2023.10
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-2">Technical Account Manager (TAM)</div>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          대형 엔터프라이즈 고객 대상 AWS 웰-아키텍티드 프레임워크 기반 기술 자문 제공 및 C-Level-실무 엔지니어 간 클라우드 전환 기술 병목 해결.
+        </p>
+      </div>
+
+      <!-- Medium -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">Medium (미디움)</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+            2022.01 ~ 2023.04
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-2">개발실장 &amp; DevOps 팀장</div>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          Hyperledger BESU 기반 Token Mainnet 및 DEX 분산 인프라 아키텍처링, 토크노믹스 분석/설계 및 CI/CD 구축.
+        </p>
+      </div>
+
+      <!-- 한화생명 -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">한화생명</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+            2019.12 ~ 2022.01
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-2">프로젝트 관리 (PM) &amp; DevOps 팀장</div>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          금융권 망분리 인프라 기반 블록체인 Stable Coin 시스템 구축 총괄 및 SAFe Agile 기반 기획/개발 관리.
+        </p>
+      </div>
+
+      <!-- NaverLabs -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">NaverLabs (네이버랩스)</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+            2016.12 ~ 2018.09
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-2">클라우드 아키텍트 / SW 엔지니어 / PM</div>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          Go 기반 자율주행 차량 OBD 분산 데이터 수집 백엔드(Kafka/Phoenix) 및 AWS EMR 기반 40억 건 처리 실내측위 WPS 시스템 개발.
+        </p>
+      </div>
+
+      <!-- 구름 -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">주식회사 구름 (goorm)</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+            2015.09 ~ 2016.10
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-2">소프트웨어 엔지니어 / 클라우드 아키텍트</div>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          온라인 코딩 평가 및 클라우드 IDE 핵심 Container Orchestration 시스템 개발 (온디맨드 인프라로 에듀테크 비용 대폭 절감).
+        </p>
+      </div>
+
+      <!-- LG 전자 -->
+      <div class="relative group">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+          <h3 class="text-lg font-bold text-white">LG 전자</h3>
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+            2013.01 ~ 2015.08
+          </span>
+        </div>
+        <div class="text-xs font-medium text-slate-400 mb-2">소프트웨어 엔지니어 / 클라우드 아키텍트</div>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          LINE 연동 대화형 홈 IoT 서비스 'LG 홈챗' 0 to 1 기획, Ruby 백엔드 프로토타이핑 및 클라우드 아키텍처 주도 (<strong>2014 CES 스마트홈 Choice Award 2개 부문 수상</strong>).
+        </p>
+      </div>
+
+      <!-- 이전 경력 요약 -->
+      <div class="relative group pt-2">
+        <div class="absolute -left-[31px] sm:-left-[39px] top-3.5 w-3 h-3 rounded-full bg-slate-800 border-2 border-slate-700"></div>
+        <h4 class="text-sm font-semibold text-slate-400 mb-2">이전 엔지니어링 경력 (2013년 이전)</h4>
+        <div class="text-xs text-slate-500 space-y-1 leading-relaxed">
+          <p><strong>KT Cloudware</strong> (2011~2013) &middot; 클라우드 아키텍트 (Private Cloud 가상화 인프라)</p>
+          <p><strong>오픈마루 스튜디오 (NCSoft)</strong> (2007~2010) &middot; SW 엔지니어 / QA (품질 모니터링 및 24Hz 음악 검색)</p>
+          <p><strong>OnNET (온넷)</strong> (2006~2007) &middot; 검색엔진 개발자 (Lucene 검색 알고리즘 튜닝)</p>
+          <p><strong>Coconut (안랩 코코넛)</strong> (2001~2005) &middot; SW 엔지니어 (대용량 로그 수집 및 C/C++ 보안 에이전트)</p>
+          <p><strong>리눅스 인터네셔널</strong> (2000~2001) &middot; SW 엔지니어 (C/C++ 메일 처리 백엔드)</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. Education & Honors -->
+  <section class="space-y-4 pt-4 border-t border-slate-800">
+    <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+      <span class="text-amber-400">🎓</span> Education &amp; Honors
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-slate-300">
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 space-y-1">
+        <div class="font-bold text-white">조선대학교</div>
+        <div class="text-xs text-slate-400">원자력공학과 학사 졸업 (1992 ~ 2000)</div>
+      </div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 space-y-1">
+        <div class="font-bold text-white">SAFe Software Engineer 인증</div>
+        <div class="text-xs text-slate-400">Scaled Agile Framework (2021)</div>
+      </div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 space-y-1">
+        <div class="font-bold text-white">CES 스마트홈 Choice Award 2개 부문 수상</div>
+        <div class="text-xs text-slate-400">LG 홈챗 서비스 아키텍처 주도 (2014)</div>
+      </div>
+      <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-4 space-y-1">
+        <div class="font-bold text-white">국제 학술 논문 게재 (IEICE)</div>
+        <div class="text-xs text-slate-400">&ldquo;Hexagonal Platform Architecture Implementation for IoT Devices and Services&rdquo; (2018)</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{{ end }}

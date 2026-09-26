@@ -25,7 +25,7 @@ designed to compile Markdown posts with decoupled external templates and deploy 
 
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&sourceDir, "source", "s", "posts", "Markdown content source directory")
-	RootCmd.PersistentFlags().StringVarP(&pagesDir, "pages", "p", "pages", "Standalone pages directory (e.g. pages/about.html)")
+	RootCmd.PersistentFlags().StringVar(&pagesDir, "pages", "pages", "Standalone pages directory (e.g. pages/about.html)")
 	RootCmd.PersistentFlags().StringVarP(&themeDir, "theme", "t", "templates/default", "Template theme directory (filesystem path)")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose debug output")
 

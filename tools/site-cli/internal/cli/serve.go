@@ -11,10 +11,11 @@ import (
 )
 
 var (
-	servePort   int
-	serveBind   string
-	serveDrafts bool
-	noWatch     bool
+	servePort      int
+	serveBind      string
+	serveDrafts    bool
+	noWatch        bool
+	serveRedirects string
 )
 
 var serveCmd = &cobra.Command{
@@ -36,6 +37,7 @@ var serveCmd = &cobra.Command{
 				BaseURL:       "/",
 				Clean:         false, // 빠른 증분 서빙을 위해 clean 배제
 				ExtraHead:     server.LiveReloadScript,
+				RedirectsFile: serveRedirects,
 			}
 			b := builder.NewBuilder(opts)
 			res, err := b.Build()
@@ -87,4 +89,5 @@ func init() {
 	serveCmd.Flags().StringVarP(&serveBind, "bind", "b", "127.0.0.1", "Host address to bind to")
 	serveCmd.Flags().BoolVarP(&serveDrafts, "drafts", "D", true, "Include draft posts in local preview")
 	serveCmd.Flags().BoolVar(&noWatch, "no-watch", false, "Disable file watching and Live Reload")
+	serveCmd.Flags().StringVar(&serveRedirects, "redirects", "redirect.yaml", "Path to redirect configuration YAML file")
 }

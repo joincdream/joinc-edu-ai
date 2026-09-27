@@ -1,0 +1,26 @@
+# ==============================================================================
+# joinc-ai.io URL Redirect Configuration
+# ==============================================================================
+# 기존 사이트(www.joinc.co.kr) 레거시 URL 및 쿼리 파라미터 기반 하위 호환 리다이렉트 설정
+
+# 1. 쿼리 파라미터 기반 리다이렉트
+# 예: /posts/detail?id=19 -> /posts/spec-driven-ai-harness/
+query_redirects:
+  - source_path: "/posts/detail"
+    query_key: "id"
+    default_target: "/"
+    mappings:
+      "4": "/posts/weekly-ai-trend/"
+      "6": "/posts/vlm/"
+      "8": "/posts/semantic-guardrail/"
+      "9": "/posts/moss-memory-linter/"
+      "11": "/posts/artifact-centric-agent-workflow/"
+      "12": "/posts/market-trends/"
+      "13": "/posts/sdlc-harness-engineering-part1-discovery/"
+      "14": "/posts/mcp-gateway-deep-dive/"
+      "16": "/posts/ai-economic-reality-and-enterprise-strategy/"
+      "17": "/posts/ai-physical-infrastructure-and-energy-bottleneck/"
+      "19": "/posts/spec-driven-ai-harness/"
+
+# 2. 정적 경로 기반 리다이렉트 (path to path)
+path_redirects: []

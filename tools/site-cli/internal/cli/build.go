@@ -12,6 +12,7 @@ var (
 	includeDrafts bool
 	cleanBuild    bool
 	baseURL       string
+	redirectsFile string
 )
 
 var buildCmd = &cobra.Command{
@@ -26,6 +27,7 @@ var buildCmd = &cobra.Command{
 			IncludeDrafts: includeDrafts,
 			BaseURL:       baseURL,
 			Clean:         cleanBuild,
+			RedirectsFile: redirectsFile,
 		}
 
 		b := builder.NewBuilder(opts)
@@ -50,4 +52,5 @@ func init() {
 	buildCmd.Flags().BoolVarP(&includeDrafts, "drafts", "D", false, "Include posts marked as status: draft")
 	buildCmd.Flags().BoolVarP(&cleanBuild, "clean", "c", true, "Clean output directory before build")
 	buildCmd.Flags().StringVar(&baseURL, "base-url", "/", "Base URL path prefix")
+	buildCmd.Flags().StringVar(&redirectsFile, "redirects", "redirect.yaml", "Path to redirect configuration YAML file")
 }

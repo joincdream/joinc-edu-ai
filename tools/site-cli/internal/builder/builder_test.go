@@ -82,3 +82,70 @@ func TestBuilder_Build(t *testing.T) {
 		t.Errorf("missing assets/style.css in output dir")
 	}
 }
+
+func TestBuilder_Build_WithRedirects(t *testing.T) {
+	tempDist := t.TempDir()
+	sourceDir := filepath.Join("..", "..", "testdata", "valid_posts")
+	themeDir := filepath.Join("..", "..", "..", "..", "templates", "default")
+
+	// 임시 redirect.yaml 작성
+	redirectYaml := `
+query_redirects:
+  - source_path: "/posts/detail"
+    query_key: "id"
+    default_target: "/"
+    mappings:
+      "19": "/posts/spec-driven-ai-harness/"
+      "4": "/posts/weekly-ai-trend/"
+path_redirects:
+  - source_path: "/old-path"
+    target_path: "/new-path/"
+`
+	redirectFile := filepath.Join(t.TempDir(), "redirect.yaml")
+	if err := os.WriteFile(redirectFile, []byte(redirectYaml), 0644); err != nil {
+		t.Fatalf("failed to write temp redirect file: %v", err)
+	}
+
+	opts := Options{
+		SourceDir:     sourceDir,
+		ThemeDir:      themeDir,
+		OutputDir:     tempDist,
+		IncludeDrafts: false,
+		Clean:         true,
+		RedirectsFile: redirectFile,
+	}
+
+	b := NewBuilder(opts)
+	_, err := b.Build()
+	if err != nil {
+		t.Fatalf("Build() with redirects failed: %v", err)
+	}
+
+	// 1. query_redirects 검증: tempDist/posts/detail/index.html
+	detailRedirectPath := filepath.Join(tempDist, "posts", "detail", "index.html")
+	detailBytes, err := os.ReadFile(detailRedirectPath)
+	if err != nil {
+		t.Fatalf("expected redirect file at %s, but not found: %v", detailRedirectPath, err)
+	}
+	detailContent := string(detailBytes)
+	if !strings.Contains(detailContent, "window.location.replace") {
+		t.Errorf("expected window.location.replace in redirect HTML")
+	}
+	if !strings.Contains(detailContent, "spec-driven-ai-harness") {
+		t.Errorf("expected mapping destination in redirect HTML")
+	}
+	if !strings.Contains(detailContent, "새로운 페이지로 안전하게 이동 중입니다...") {
+		t.Errorf("expected user guide message in redirect HTML")
+	}
+
+	// 2. path_redirects 검증: tempDist/old-path/index.html
+	oldPathRedirect := filepath.Join(tempDist, "old-path", "index.html")
+	oldBytes, err := os.ReadFile(oldPathRedirect)
+	if err != nil {
+		t.Fatalf("expected path redirect file at %s, but not found: %v", oldPathRedirect, err)
+	}
+	oldContent := string(oldBytes)
+	if !strings.Contains(oldContent, "/new-path/") {
+		t.Errorf("expected /new-path/ in path redirect HTML")
+	}
+}

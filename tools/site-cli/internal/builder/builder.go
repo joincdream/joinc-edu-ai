@@ -25,6 +25,7 @@ type Options struct {
 	BaseURL       string        // 베이스 URL (기본: "/")
 	Clean         bool          // 빌드 전 출력 디렉터리 정리 여부
 	ExtraHead     template.HTML // Live Reload 스크립트 등
+	RedirectsFile string        // 하위 호환 리다이렉트 설정 파일 (기본: "redirect.yaml")
 }
 
 // Result 빌드 실행 결과 통계
@@ -56,6 +57,9 @@ func NewBuilder(opts Options) *Builder {
 	}
 	if opts.BaseURL == "" {
 		opts.BaseURL = "/"
+	}
+	if opts.RedirectsFile == "" {
+		opts.RedirectsFile = "redirect.yaml"
 	}
 	return &Builder{opts: opts}
 }
@@ -280,6 +284,11 @@ func (b *Builder) Build() (*Result, error) {
 		if err := copyDir(pagesAssets, filepath.Join(distAssets, "pages")); err != nil {
 			return nil, fmt.Errorf("builder: failed to copy page assets: %w", err)
 		}
+	}
+
+	// 11. 하위 호환 리다이렉트 페이지 생성
+	if err := b.generateRedirects(); err != nil {
+		return nil, fmt.Errorf("builder: generating redirects failed: %w", err)
 	}
 
 	return &Result{

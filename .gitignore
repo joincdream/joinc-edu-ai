@@ -26,3 +26,6 @@ dist/
 .env.*
 *.log
 .jira-profile
+
+# Temporary directories
+tmp/

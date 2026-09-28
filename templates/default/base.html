@@ -37,6 +37,11 @@
   <!-- Mermaid.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
+  <!-- KaTeX Math Rendering CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
   <!-- Custom Theme Styles -->
   <link rel="stylesheet" href="/assets/style.css" />
 
@@ -183,6 +188,29 @@
         closeMermaidModal();
       }
     });
+
+    // 3. KaTeX 수식 자동 렌더링 (제목 및 본문)
+    function initKaTeX() {
+      if (typeof renderMathInElement === "function") {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\(", right: "\\)", display: false },
+            { left: "\\[", right: "\\]", display: true }
+          ],
+          ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+          ignoredClasses: ["mermaid-raw", "mermaid-container"],
+          throwOnError: false
+        });
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initKaTeX);
+    } else {
+      initKaTeX();
+    }
   </script>
 </body>
 </html>

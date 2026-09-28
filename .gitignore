@@ -17,5 +17,12 @@ dist/
 .DS_Store
 .vscode/
 .idea/
+.obsidian/
 *.swp
 *~
+
+# Environment & local logs
+.env
+.env.*
+*.log
+.jira-profile

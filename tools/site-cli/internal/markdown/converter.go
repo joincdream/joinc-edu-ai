@@ -85,6 +85,14 @@ func (c *Converter) Convert(source []byte) (template.HTML, []model.TOCItem, erro
 			}
 		}
 
+		// 이미지 상대 경로 자동 보정 (예: ../assets/img.png -> /assets/images/img.png)
+		if img, ok := n.(*ast.Image); ok {
+			dest := string(img.Destination)
+			if newDest, modified := normalizeImagePath(dest); modified {
+				img.Destination = []byte(newDest)
+			}
+		}
+
 		return ast.WalkContinue, nil
 	})
 
@@ -127,4 +135,25 @@ func extractHeadingText(n ast.Node, source []byte) string {
 		return ast.WalkContinue, nil
 	})
 	return strings.TrimSpace(buf.String())
+}
+
+// normalizeImagePath 마크다운 내 상대 에셋 경로를 정적 배포 절대 경로로 정규화합니다.
+func normalizeImagePath(dest string) (string, bool) {
+	// 1. 외부 URL (http://, https://, //) 또는 data URI는 보정 대상에서 제외
+	if strings.Contains(dest, "://") || strings.HasPrefix(dest, "//") || strings.HasPrefix(dest, "data:") {
+		return dest, false
+	}
+
+	// 2. 이미 배포 절대 경로(/assets/...)인 경우 보정 대상에서 제외
+	if strings.HasPrefix(dest, "/assets/") {
+		return dest, false
+	}
+
+	// 3. ../assets/, ./assets/, assets/, posts/assets/ 등 assets/ 디렉터리를 가리키는 상대 경로 치환
+	if idx := strings.Index(dest, "assets/"); idx != -1 {
+		subPath := dest[idx+len("assets/"):]
+		return "/assets/images/" + strings.TrimPrefix(subPath, "/"), true
+	}
+
+	return dest, false
 }

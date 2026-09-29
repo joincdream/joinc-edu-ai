@@ -101,4 +101,51 @@ End of document.
 			t.Errorf("expected checkbox in HTML, got:\n%s", htmlStr)
 		}
 	})
+
+	t.Run("Normalize relative image paths", func(t *testing.T) {
+		input := []byte(`
+![Relative parent](../assets/image1.png)
+![Relative current](./assets/sub/image2.jpg)
+![Direct assets](assets/image3.jpeg)
+![External](https://example.com/assets/image4.png)
+![Already absolute](/assets/images/image5.png)
+[Markdown link should not be modified](../assets/file.pdf)
+`)
+
+		html, _, err := c.Convert(input)
+		if err != nil {
+			t.Fatalf("Convert failed: %v", err)
+		}
+
+		htmlStr := string(html)
+
+		// 1. 상대 경로가 /assets/images/... 로 변환되었는지 검증
+		expectedMatches := []string{
+			`src="/assets/images/image1.png"`,
+			`src="/assets/images/sub/image2.jpg"`,
+			`src="/assets/images/image3.jpeg"`,
+		}
+		for _, exp := range expectedMatches {
+			if !strings.Contains(htmlStr, exp) {
+				t.Errorf("expected %q in HTML, got:\n%s", exp, htmlStr)
+			}
+		}
+
+		// 2. 외부 URL 및 기존 절대 경로는 보존되는지 검증
+		preservedMatches := []string{
+			`src="https://example.com/assets/image4.png"`,
+			`src="/assets/images/image5.png"`,
+		}
+		for _, exp := range preservedMatches {
+			if !strings.Contains(htmlStr, exp) {
+				t.Errorf("expected preserved %q in HTML, got:\n%s", exp, htmlStr)
+			}
+		}
+
+		// 3. 일반 하이퍼링크는 ast.Link이므로 변경되지 않아야 함
+		if !strings.Contains(htmlStr, `href="../assets/file.pdf"`) {
+			t.Errorf("expected normal link to remain untouched, got:\n%s", htmlStr)
+		}
+	})
 }
+

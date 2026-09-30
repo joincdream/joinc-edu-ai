@@ -4,10 +4,6 @@ BIN_DIR := bin
 BIN := $(BIN_DIR)/site-cli
 SRC := tools/site-cli/cmd/site-cli
 
-# 테마 설정 (기본값: default-light, 예: make build THEME=default)
-THEME ?= default-light
-THEME_DIR := $(if $(filter templates/%,$(THEME)),$(THEME),templates/$(THEME))
-
 all: build
 
 # 1. 사이트 빌더 엔진 컴파일
@@ -16,10 +12,10 @@ $(BIN):
 	@echo "==> Compiling site-cli engine..."
 	@cd tools/site-cli && go build -o ../../$(BIN) ./cmd/site-cli
 
-# 2. 정적 웹사이트 일괄 컴파일 (dist/ 생성)
+# 2. 정적 웹사이트 일괄 컴파일 (config.yaml 기반 dist/ 생성)
 build: $(BIN)
-	@echo "==> Building static site with theme: $(THEME_DIR)..."
-	@$(BIN) build --source posts --pages pages --theme $(THEME_DIR) --output dist
+	@echo "==> Building static site..."
+	@$(BIN) build
 
 # 3. 로컬 정적 사이트 서빙 (재컴파일 없이 dist/ 디렉터리 순수 서빙)
 serve: $(BIN)
@@ -28,8 +24,8 @@ serve: $(BIN)
 
 # 4. 실시간 감시 개발 서버 (파일 변경 시 자동 재컴파일 및 브라우저 새로고침)
 dev: $(BIN)
-	@echo "==> Starting dev server with live reload on http://localhost:8080 (theme: $(THEME_DIR))..."
-	@$(BIN) serve --dir dist --watch --source posts --pages pages --theme $(THEME_DIR)
+	@echo "==> Starting dev server with live reload on http://localhost:8080..."
+	@$(BIN) serve --dir dist --watch
 
 # 4. 카테고리별 통계 및 글 목록 조회
 categories: $(BIN)

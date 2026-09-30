@@ -1,0 +1,16 @@
+# Joinc AI Static Site Generator Global Configuration
+# 이 파일은 사이트 빌더의 단일 진실 공급원(SSOT) 역할을 합니다.
+
+title: "AI Info"
+subtitle: "Enterprise AI & Software Engineering Tech Blog"
+baseURL: "/"
+cname: "www.joinc.co.kr"
+
+# 활성 테마: "default-light" (라이트 테마) 또는 "default" (다크 테마)
+theme: "default-light"
+
+# 경로 매핑
+source: "posts"
+pages: "pages"
+output: "dist"
+redirects: "redirect.yaml"

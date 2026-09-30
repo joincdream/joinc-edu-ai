@@ -19,6 +19,16 @@ var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "Compile Markdown posts and templates into static HTML/CSS/JS",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if !cmd.Flags().Changed("output") && loadedConfig.Output != "" {
+			outputDir = loadedConfig.Output
+		}
+		if !cmd.Flags().Changed("base-url") && loadedConfig.BaseURL != "" {
+			baseURL = loadedConfig.BaseURL
+		}
+		if !cmd.Flags().Changed("redirects") && loadedConfig.RedirectsFile != "" {
+			redirectsFile = loadedConfig.RedirectsFile
+		}
+
 		opts := builder.Options{
 			SourceDir:     sourceDir,
 			PagesDir:      pagesDir,

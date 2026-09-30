@@ -172,11 +172,11 @@
 
 ## 6. 완료 기준 (Definition of Done)
 
-- [ ] `task/TP-3_design_md_adoption_plan.md` 계획서 작성 및 저장
-- [ ] `templates/default/DESIGN.md` 작성 및 `npx @google/design.md lint` 통과
-- [ ] `AGENTS.md`에 `DESIGN.md` 참조 규칙 반영
-- [ ] `tools/site-cli/internal/template/engine_test.go` 단위 테스트 추가 및 통과 (`cd tools/site-cli && go test -v ./...`)
-- [ ] 정적 사이트 컴파일 검증 (`make build`)
-- [ ] `git status`로 위 5개 대상 파일 외의 변경이 없음을 엄격 확인
-- [ ] Jira 티켓 [TP-3](https://joincdream.atlassian.net/browse/TP-3) 코멘트 등록 및 완료 처리
+- [x] `task/TP-3_design_md_adoption_plan.md` 계획서 작성 및 저장
+- [x] `templates/default/DESIGN.md` 작성 및 `npx @google/design.md lint` 통과
+- [x] `AGENTS.md`에 `DESIGN.md` 참조 규칙 반영
+- [x] `tools/site-cli/internal/template/engine_test.go` 단위 테스트 추가 및 통과 (`cd tools/site-cli && go test -v ./...`)
+- [x] 정적 사이트 컴파일 검증 (`make build`)
+- [x] `git status`로 위 5개 대상 파일 외의 변경이 없음을 엄격 확인
+- [x] Jira 티켓 [TP-3](https://joincdream.atlassian.net/browse/TP-3) 코멘트 등록 및 완료 처리
 

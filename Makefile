@@ -1,8 +1,12 @@
-.PHONY: all build serve test clean categories
+.PHONY: all build serve dev test clean categories
 
 BIN_DIR := bin
 BIN := $(BIN_DIR)/site-cli
 SRC := tools/site-cli/cmd/site-cli
+
+# 테마 설정 (기본값: default, 예: make build THEME=default-light)
+THEME ?= default
+THEME_DIR := $(if $(filter templates/%,$(THEME)),$(THEME),templates/$(THEME))
 
 all: build
 
@@ -14,13 +18,18 @@ $(BIN):
 
 # 2. 정적 웹사이트 일괄 컴파일 (dist/ 생성)
 build: $(BIN)
-	@echo "==> Building static site..."
-	@$(BIN) build --source posts --pages pages --theme templates/default --output dist
+	@echo "==> Building static site with theme: $(THEME_DIR)..."
+	@$(BIN) build --source posts --pages pages --theme $(THEME_DIR) --output dist
 
-# 3. 로컬 개발 서버 구동 (라이브 리로드 및 브라우저 감시)
+# 3. 로컬 정적 사이트 서빙 (재컴파일 없이 dist/ 디렉터리 순수 서빙)
 serve: $(BIN)
-	@echo "==> Starting local dev server on http://localhost:8080..."
-	@$(BIN) serve --source posts --pages pages --theme templates/default
+	@echo "==> Serving compiled static site from dist/ on http://localhost:8080..."
+	@$(BIN) serve --dir dist
+
+# 4. 실시간 감시 개발 서버 (파일 변경 시 자동 재컴파일 및 브라우저 새로고침)
+dev: $(BIN)
+	@echo "==> Starting dev server with live reload on http://localhost:8080 (theme: $(THEME_DIR))..."
+	@$(BIN) serve --dir dist --watch --source posts --pages pages --theme $(THEME_DIR)
 
 # 4. 카테고리별 통계 및 글 목록 조회
 categories: $(BIN)

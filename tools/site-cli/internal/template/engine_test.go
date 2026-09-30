@@ -90,3 +90,130 @@ nav:
 		}
 	})
 }
+
+func TestEngine_DesignTokens(t *testing.T) {
+	t.Run("Load DESIGN.md and inject into template context", func(t *testing.T) {
+		tempTheme := t.TempDir()
+
+		// messages.yaml
+		msgContent := "common:\n  site_title: \"Test Site\"\n"
+		if err := os.WriteFile(filepath.Join(tempTheme, "messages.yaml"), []byte(msgContent), 0644); err != nil {
+			t.Fatalf("failed to write messages.yaml: %v", err)
+		}
+
+		// DESIGN.md
+		designContent := `---
+version: "alpha"
+name: "Test Dark Theme"
+colors:
+  primary: "#1d4ed8"
+  neutral: "#020617"
+rounded:
+  md: "8px"
+---
+
+# Test Theme
+Markdown documentation follows here.
+`
+		if err := os.WriteFile(filepath.Join(tempTheme, "DESIGN.md"), []byte(designContent), 0644); err != nil {
+			t.Fatalf("failed to write DESIGN.md: %v", err)
+		}
+
+		// base.html with design token CSS variables
+		baseHTML := `{{ define "base" }}<!DOCTYPE html>
+<html>
+<head>
+{{ if .Design }}
+<style>
+:root {
+  --color-primary: {{ index .Design.Colors "primary" }};
+  --rounded-md: {{ index .Design.Rounded "md" }};
+}
+</style>
+{{ end }}
+</head>
+<body>{{ block "content" . }}{{ end }}</body>
+</html>{{ end }}`
+
+		indexHTML := `{{ define "content" }}<h1>{{ .Design.Name }}</h1>{{ end }}`
+
+		if err := os.WriteFile(filepath.Join(tempTheme, "base.html"), []byte(baseHTML), 0644); err != nil {
+			t.Fatalf("failed to write base.html: %v", err)
+		}
+		if err := os.WriteFile(filepath.Join(tempTheme, "index.html"), []byte(indexHTML), 0644); err != nil {
+			t.Fatalf("failed to write index.html: %v", err)
+		}
+
+		eng, err := NewEngine(tempTheme)
+		if err != nil {
+			t.Fatalf("failed to init engine: %v", err)
+		}
+
+		if eng.GetDesign() == nil {
+			t.Fatal("expected design tokens to be loaded, got nil")
+		}
+		if eng.GetDesign().Name != "Test Dark Theme" {
+			t.Errorf("expected theme name 'Test Dark Theme', got %q", eng.GetDesign().Name)
+		}
+		if eng.GetDesign().Colors["primary"] != "#1d4ed8" {
+			t.Errorf("expected primary color '#1d4ed8', got %q", eng.GetDesign().Colors["primary"])
+		}
+
+		var buf bytes.Buffer
+		ctx := &model.TemplateContext{}
+		if err := eng.RenderPage(&buf, "index.html", ctx); err != nil {
+			t.Fatalf("failed to render page: %v", err)
+		}
+
+		rendered := buf.String()
+		if !strings.Contains(rendered, "--color-primary: #1d4ed8;") {
+			t.Errorf("rendered output missing CSS variable --color-primary: %s", rendered)
+		}
+		if !strings.Contains(rendered, "--rounded-md: 8px;") {
+			t.Errorf("rendered output missing CSS variable --rounded-md: %s", rendered)
+		}
+		if !strings.Contains(rendered, "<h1>Test Dark Theme</h1>") {
+			t.Errorf("rendered output missing design name in content: %s", rendered)
+		}
+	})
+
+	t.Run("Graceful fallback when DESIGN.md is absent", func(t *testing.T) {
+		tempTheme := t.TempDir()
+
+		// messages.yaml only
+		msgContent := "common:\n  site_title: \"Test Site\"\n"
+		if err := os.WriteFile(filepath.Join(tempTheme, "messages.yaml"), []byte(msgContent), 0644); err != nil {
+			t.Fatalf("failed to write messages.yaml: %v", err)
+		}
+
+		baseHTML := `{{ define "base" }}<html><body>{{ block "content" . }}{{ end }}</body></html>{{ end }}`
+		indexHTML := `{{ define "content" }}<main>No Design</main>{{ end }}`
+
+		if err := os.WriteFile(filepath.Join(tempTheme, "base.html"), []byte(baseHTML), 0644); err != nil {
+			t.Fatalf("failed to write base.html: %v", err)
+		}
+		if err := os.WriteFile(filepath.Join(tempTheme, "index.html"), []byte(indexHTML), 0644); err != nil {
+			t.Fatalf("failed to write index.html: %v", err)
+		}
+
+		eng, err := NewEngine(tempTheme)
+		if err != nil {
+			t.Fatalf("failed to init engine without DESIGN.md: %v", err)
+		}
+
+		if eng.GetDesign() != nil {
+			t.Errorf("expected GetDesign() to be nil, got %v", eng.GetDesign())
+		}
+
+		var buf bytes.Buffer
+		ctx := &model.TemplateContext{}
+		if err := eng.RenderPage(&buf, "index.html", ctx); err != nil {
+			t.Fatalf("failed to render page: %v", err)
+		}
+
+		if !strings.Contains(buf.String(), "<main>No Design</main>") {
+			t.Errorf("unexpected render output: %s", buf.String())
+		}
+	})
+}
+

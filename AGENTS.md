@@ -10,7 +10,7 @@
 | :--- | :--- | :--- |
 | **콘텐츠 계층 (Content Fast Path)**<br/>글 작성, 편집, 오타 교정, **발행(Publish)**, 드래프트 이동 | `posts/`, `docs/` | **[절대 금지] `tools/` 내부 Go 소스 코드 조회 절대 금지**<br/>**[절대 금지] `make build`, `go test` 등 빌드·테스트 명령 실행 금지**<br/>• 마크다운 본문, Frontmatter 수정 및 파일 이동(`git mv`)만 즉시 수행 (5초 이내 완료) |
 | **빌더 엔진 계층 (Engine Path)**<br/>사이트 빌더 CLI 기능 개발, 버그 수정, 성능 최적화 | `tools/site-cli/` | • 제1조(OKF 스펙 참조) 및 제4조(단위 테스트/정적 빌드 검증) 필수 준수 |
-| **템플릿/UI 계층 (Theme Path)**<br/>사이트 레이아웃, CSS 스타일, UI 안내 문구 수정 | `templates/` | • `templates/` 디렉터리 내 HTML, CSS, `messages.yaml` 파일만 최소 수정 |
+| **템플릿/UI 계층 (Theme Path)**<br/>사이트 레이아웃, CSS 스타일, UI 안내 문구 수정 | `templates/` | • `templates/` 디렉터리 내 HTML, CSS, `messages.yaml`, `DESIGN.md`(Google Labs 규격) 파일만 최소 수정 |
 
 ---
 
@@ -40,6 +40,7 @@
 - **3계층 엄격 격리**: 콘텐츠(`posts/`), 빌더 엔진(`tools/site-cli/`), 템플릿(`templates/`) 상호 오염 금지
 - **100% Pure Static**: 런타임 DB나 백엔드 API 종속성을 배제하고 순수 정적 파일(HTML/CSS/JS)만 생성
 - **UI 메시지 외재화**: UI 텍스트 및 안내 문구 하드코딩 금지 (`templates/<theme>/messages.yaml` 참조)
+- **디자인 토큰 외재화**: UI 색상 및 스타일은 Google Labs `DESIGN.md` 스펙에 정의하고 WCAG AA 명도 대비 준수
 - **Idiomatic Go**: 과도한 추상화 및 고수준 프레임워크 지양, 표준 라이브러리 및 간결하고 테스트 가능한 코드 작성
 
 ---

@@ -231,6 +231,7 @@ type TemplateContext struct {
 	BaseURL        string
 	CurrentPath    string
 	Messages       MessageBundle
+	Design         *DesignTokens
 	Categories     []*Category
 	ActiveCategory *Category
 	Posts          []*Post

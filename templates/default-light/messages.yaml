@@ -1,0 +1,36 @@
+# UI 정적 텍스트 및 라벨 리소스 번들 (Default Light Theme)
+common:
+  site_title: "AI Info"
+  site_subtitle: "Enterprise AI & Software Engineering Tech Blog"
+  search_placeholder: "기술 포스트 검색..."
+  read_time_suffix: "분 소요"
+  table_of_contents: "목차 (TOC)"
+  back_to_list: "전체 포스트 목록으로"
+  copy_link: "링크 복사"
+  copy_success: "링크가 복사되었습니다!"
+  share: "공유하기"
+
+nav:
+  about: "About"
+  all_posts: "전체 포스트"
+  categories_title: "카테고리"
+  tags_title: "주요 태그"
+  post_count_unit: "편"
+
+card:
+  read_more: "자세히 읽기"
+  published_prefix: "발행일:"
+
+detail:
+  author_label: "작성자:"
+  author_name: "윤상배"
+  comments_title: "댓글 및 의견"
+  mermaid_zoom_tip: "다이어그램을 클릭하면 확대(Zoom)하여 볼 수 있습니다."
+
+empty:
+  no_posts_found: "등록된 기술 포스트가 없습니다."
+  no_category_posts: "해당 카테고리에 속한 포스트가 없습니다."
+
+footer:
+  copyright: "© 2026 joinc.co.kr. All rights reserved."
+  powered_by: "Built with Static GitOps Engine & Hosted on GitHub Pages"

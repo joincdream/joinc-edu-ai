@@ -16,6 +16,7 @@ import (
 type Engine struct {
 	themeDir string
 	messages model.MessageBundle
+	design   *model.DesignTokens
 	funcMap  template.FuncMap
 }
 
@@ -40,6 +41,12 @@ func NewEngine(themeDir string) (*Engine, error) {
 	var messages model.MessageBundle
 	if err := yaml.Unmarshal(msgBytes, &messages); err != nil {
 		return nil, fmt.Errorf("template: failed to parse messages YAML %q: %w", msgPath, err)
+	}
+
+	// 2. DESIGN.md 로드 (선택적)
+	design, err := loadDesign(themeDir)
+	if err != nil {
+		return nil, err
 	}
 
 	funcMap := template.FuncMap{
@@ -69,6 +76,7 @@ func NewEngine(themeDir string) (*Engine, error) {
 	return &Engine{
 		themeDir: themeDir,
 		messages: messages,
+		design:   design,
 		funcMap:  funcMap,
 	}, nil
 }
@@ -76,6 +84,54 @@ func NewEngine(themeDir string) (*Engine, error) {
 // GetMessages 로드된 메시지 리소스 번들을 반환합니다.
 func (e *Engine) GetMessages() model.MessageBundle {
 	return e.messages
+}
+
+// GetDesign 로드된 디자인 시스템 토큰을 반환합니다 (없으면 nil).
+func (e *Engine) GetDesign() *model.DesignTokens {
+	return e.design
+}
+
+// loadDesign 테마 디렉터리에서 DESIGN.md를 로드하여 파싱합니다. 없으면 nil을 반환합니다.
+func loadDesign(themeDir string) (*model.DesignTokens, error) {
+	designPath := filepath.Join(themeDir, "DESIGN.md")
+	content, err := os.ReadFile(designPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("template: failed to read DESIGN.md %q: %w", designPath, err)
+	}
+
+	tokens, err := parseDesignTokens(content)
+	if err != nil {
+		return nil, fmt.Errorf("template: failed to parse %q: %w", designPath, err)
+	}
+	return tokens, nil
+}
+
+// parseDesignTokens DESIGN.md 파일의 Frontmatter를 파싱하여 DesignTokens 구조체로 반환합니다.
+func parseDesignTokens(content []byte) (*model.DesignTokens, error) {
+	str := strings.TrimSpace(string(content))
+	if !strings.HasPrefix(str, "---") {
+		return nil, nil
+	}
+
+	rest := str[3:]
+	if idx := strings.IndexAny(rest, "\r\n"); idx != -1 {
+		rest = rest[idx:]
+	}
+
+	endIdx := strings.Index(rest, "\n---")
+	if endIdx == -1 {
+		return nil, fmt.Errorf("invalid DESIGN.md format: closing delimiter '---' not found")
+	}
+
+	frontmatter := rest[:endIdx]
+	var tokens model.DesignTokens
+	if err := yaml.Unmarshal([]byte(frontmatter), &tokens); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal DESIGN.md YAML: %w", err)
+	}
+	return &tokens, nil
 }
 
 // HasTemplate 특정 템플릿 파일이 테마 디렉터리에 존재하는지 확인합니다.
@@ -127,6 +183,9 @@ func (e *Engine) loadTemplate(pageName string) (*template.Template, error) {
 // RenderPage 주어진 템플릿 이름과 컨텍스트로 HTML을 렌더링합니다.
 func (e *Engine) RenderPage(w io.Writer, templateName string, ctx *model.TemplateContext) error {
 	ctx.Messages = e.messages
+	if ctx.Design == nil {
+		ctx.Design = e.design
+	}
 
 	t, err := e.loadTemplate(templateName)
 	if err != nil {
@@ -144,6 +203,9 @@ func (e *Engine) RenderPage(w io.Writer, templateName string, ctx *model.Templat
 // RenderCustomTemplate 테마 외부의 커스텀 템플릿 파일(예: pages/about.html)과 base 레이아웃을 조합하여 렌더링합니다.
 func (e *Engine) RenderCustomTemplate(w io.Writer, templatePath string, ctx *model.TemplateContext) error {
 	ctx.Messages = e.messages
+	if ctx.Design == nil {
+		ctx.Design = e.design
+	}
 
 	if _, err := os.Stat(templatePath); err != nil {
 		return fmt.Errorf("template: custom template file not found: %s: %w", templatePath, err)

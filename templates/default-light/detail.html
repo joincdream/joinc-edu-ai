@@ -1,0 +1,87 @@
+{{ define "content" }}
+<div class="flex flex-col lg:flex-row gap-10">
+  <!-- Main Post Content -->
+  <article class="flex-1 min-w-0">
+    <!-- Breadcrumb & Back -->
+    <div class="mb-6">
+      <a href="/" class="text-xs font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors">
+        &larr; {{ .Messages.Common.back_to_list }}
+      </a>
+    </div>
+
+    <!-- Post Header -->
+    <header class="mb-10 pb-8 border-b border-slate-200">
+      <div class="flex items-center gap-2 mb-4">
+        <a href="/category/{{ .Post.Frontmatter.Category | lower }}/" class="px-3 py-1 text-xs font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors">
+          {{ .Post.Frontmatter.Category }}
+        </a>
+        <span class="text-xs text-slate-400 font-mono">
+          {{ .Post.ReadingTimeMinutes }} {{ .Messages.Common.read_time_suffix }}
+        </span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+        {{ .Post.Frontmatter.Title }}
+      </h1>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+        <div class="flex items-center gap-4">
+          <span>{{ .Messages.Detail.author_label }} <strong class="text-slate-800">{{ .Messages.Detail.author_name }}</strong></span>
+          <span>•</span>
+          <span>{{ .Messages.Card.published_prefix }} {{ .Post.Frontmatter.CreatedDate }}</span>
+        </div>
+
+        {{ if .Post.Frontmatter.Tags }}
+        <div class="flex items-center gap-1.5 flex-wrap">
+          {{ range .Post.Frontmatter.Tags }}
+          <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 text-[11px]">
+            #{{ . }}
+          </span>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </header>
+
+    <!-- Post Body -->
+    <div class="prose max-w-none">
+      {{ .Post.HTMLContent }}
+    </div>
+
+    <!-- Post Footer -->
+    <div class="mt-16 pt-8 border-t border-slate-200 flex items-center justify-between">
+      <a href="/" class="px-4 py-2 text-sm font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-lg shadow-sm transition-colors">
+        &larr; {{ .Messages.Common.back_to_list }}
+      </a>
+      <button onclick="navigator.clipboard.writeText(window.location.href); alert('{{ .Messages.Common.copy_success }}');" class="px-4 py-2 text-sm font-medium bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-lg transition-colors">
+        {{ .Messages.Common.copy_link }}
+      </button>
+    </div>
+  </article>
+
+  <!-- Sidebar Table of Contents (TOC) -->
+  {{ if .TOC }}
+  <aside class="w-full lg:w-72 flex-shrink-0">
+    <div class="sticky top-24 space-y-4">
+      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">
+          {{ .Messages.Common.table_of_contents }}
+        </h2>
+        <nav class="space-y-2 text-sm max-h-[calc(100vh-14rem)] overflow-y-auto pr-1">
+          {{ range .TOC }}
+          <a href="#{{ .ID }}" class="block text-slate-600 hover:text-blue-600 transition-colors {{ if eq .Level 3 }}pl-4 text-xs{{ else if eq .Level 4 }}pl-8 text-xs{{ end }}">
+            {{ .Title }}
+          </a>
+          {{ end }}
+        </nav>
+      </div>
+
+      <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 flex items-center gap-2">
+        <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>{{ .Messages.Detail.mermaid_zoom_tip }}</span>
+      </div>
+    </div>
+  </aside>
+  {{ end }}
+</div>
+{{ end }}

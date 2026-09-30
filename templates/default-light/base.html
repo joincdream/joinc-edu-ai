@@ -1,5 +1,5 @@
 {{ define "base" }}<!DOCTYPE html>
-<html lang="ko" class="dark">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,8 +31,8 @@
     }
   </script>
 
-  <!-- PrismJS Tomorrow Dark Syntax Highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <!-- PrismJS Light Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
 
   <!-- Mermaid.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
@@ -64,21 +64,21 @@
 
   {{ .ExtraHead }}
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-blue-600 selection:text-white">
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased selection:bg-blue-600 selection:text-white">
   
   <!-- Navigation Header -->
-  <header class="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+  <header class="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <a href="/" class="flex items-center gap-2 group">
-          <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
+          <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
             AI
           </div>
           <div class="flex flex-col">
-            <span class="text-lg font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+            <span class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
               {{ .Messages.Common.site_title }}
             </span>
-            <span class="text-xs text-slate-400 hidden sm:inline">
+            <span class="text-xs text-slate-500 hidden sm:inline">
               {{ .Messages.Common.site_subtitle }}
             </span>
           </div>
@@ -86,7 +86,7 @@
       </div>
 
       <nav class="flex items-center gap-2">
-        <a href="/about/" class="px-3.5 py-1.5 text-sm font-medium transition-colors {{ if eq .CurrentPath "/about/" }}bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-lg font-semibold{{ else }}text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg{{ end }}">
+        <a href="/about/" class="px-3.5 py-1.5 text-sm font-medium transition-colors {{ if eq .CurrentPath "/about/" }}bg-blue-50 text-blue-700 border border-blue-200 rounded-lg font-semibold{{ else }}text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg{{ end }}">
           {{ .Messages.Nav.about }}
         </a>
       </nav>
@@ -99,27 +99,27 @@
   </div>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800/80 bg-slate-950 py-8 mt-auto">
+  <footer class="border-t border-slate-200 bg-white py-8 mt-auto">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
       <p>{{ .Messages.Footer.copyright }}</p>
-      <p class="text-slate-600">{{ .Messages.Footer.powered_by }}</p>
+      <p class="text-slate-400">{{ .Messages.Footer.powered_by }}</p>
     </div>
   </footer>
 
   <!-- Mermaid Click-to-Zoom Modal -->
-  <div id="mermaid-modal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md p-2 sm:p-4 md:p-6 flex items-center justify-center">
-    <div class="relative w-full h-full max-w-[98vw] max-h-[96vh] bg-slate-900/95 border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col">
-      <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-800">
+  <div id="mermaid-modal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm p-2 sm:p-4 md:p-6 flex items-center justify-center">
+    <div class="relative w-full h-full max-w-[98vw] max-h-[96vh] bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col">
+      <div class="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-200">
         <div class="flex items-center gap-2">
-          <span class="inline-block w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
-          <span class="text-sm font-semibold text-slate-200">다이어그램 전체 화면 확대</span>
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
+          <span class="text-sm font-semibold text-slate-800">다이어그램 전체 화면 확대</span>
         </div>
-        <button id="modal-close-btn" class="px-3.5 py-1.5 text-xs sm:text-sm bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg transition-colors border border-slate-700 font-medium flex items-center gap-1.5">
+        <button id="modal-close-btn" class="px-3.5 py-1.5 text-xs sm:text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200 font-medium flex items-center gap-1.5">
           <span>닫기</span>
-          <kbd class="px-1.5 py-0.5 text-[10px] bg-slate-900 border border-slate-700 rounded text-slate-400">ESC</kbd>
+          <kbd class="px-1.5 py-0.5 text-[10px] bg-white border border-slate-300 rounded text-slate-500">ESC</kbd>
         </button>
       </div>
-      <div id="modal-body" class="flex-1 overflow-auto flex items-center justify-center p-2 sm:p-6">
+      <div id="modal-body" class="flex-1 overflow-auto flex items-center justify-center p-2 sm:p-6 bg-slate-50 rounded-xl">
         <!-- Expanded SVG will be injected here -->
       </div>
     </div>
@@ -132,7 +132,7 @@
     // 1. Mermaid 초기화 및 렌더링
     mermaid.initialize({
       startOnLoad: false,
-      theme: 'dark',
+      theme: 'default',
       themeVariables: {
         fontFamily: 'Pretendard, sans-serif',
         fontSize: '13px',
@@ -160,7 +160,7 @@
           container.appendChild(svgWrapper);
         } catch (err) {
           console.error("Mermaid render error:", err);
-          container.innerHTML = `<pre class="text-xs text-rose-400 p-4">${err.message}</pre>`;
+          container.innerHTML = `<pre class="text-xs text-rose-600 p-4">${err.message}</pre>`;
         }
       }
     });
@@ -174,7 +174,6 @@
       modalBody.innerHTML = svgHtml;
       const svg = modalBody.querySelector("svg");
       if (svg) {
-        // 기존 인라인 고정 픽셀 속성 제거 및 100% 풀 와이드 스케일업
         svg.removeAttribute("width");
         svg.removeAttribute("height");
         svg.style.width = "100%";

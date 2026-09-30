@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/joincdream/joinc-ai.io/tools/site-cli/internal/builder"
@@ -13,56 +14,62 @@ import (
 var (
 	servePort      int
 	serveBind      string
+	serveDir       string
+	serveWatch     bool
 	serveDrafts    bool
-	noWatch        bool
 	serveRedirects string
 )
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Start local development HTTP server with live reloading (Hugo-like)",
+	Short: "Serve compiled static site (dist/) or start live reload dev server with --watch",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		distDir := "dist"
-
-		hub := server.NewSSEHub()
-
-		// 빌드 헬퍼 함수
-		doBuild := func() error {
-			opts := builder.Options{
-				SourceDir:     sourceDir,
-				PagesDir:      pagesDir,
-				ThemeDir:      themeDir,
-				OutputDir:     distDir,
-				IncludeDrafts: serveDrafts,
-				BaseURL:       "/",
-				Clean:         false, // 빠른 증분 서빙을 위해 clean 배제
-				ExtraHead:     server.LiveReloadScript,
-				RedirectsFile: serveRedirects,
+		// 1. 디렉터리 존재 여부 확인
+		info, err := os.Stat(serveDir)
+		if err != nil || !info.IsDir() {
+			if !serveWatch {
+				return fmt.Errorf("target directory %q not found. Please run 'make build' first", serveDir)
 			}
-			b := builder.NewBuilder(opts)
-			res, err := b.Build()
-			if err != nil {
-				return err
-			}
-			log.Printf("[BUILD] Recompiled in %v (Posts: %d, Categories: %d)", res.Duration, res.TotalPosts, res.TotalCategories)
-			return nil
 		}
 
-		// 1. 초기 1회 빌드 실행
-		log.Println("[SERVE] Running initial compilation...")
-		if err := doBuild(); err != nil {
-			return fmt.Errorf("initial build failed: %w", err)
-		}
+		var hub *server.SSEHub
 
-		// 2. 파일 감시자 시작 (트리플 감시: posts/, templates/, pages/)
-		if !noWatch {
+		// 2. --watch 플래그가 활성화된 경우에만 Live Reload 및 증분 빌드 활성화
+		if serveWatch {
+			hub = server.NewSSEHub()
+
+			doBuild := func() error {
+				opts := builder.Options{
+					SourceDir:     sourceDir,
+					PagesDir:      pagesDir,
+					ThemeDir:      themeDir,
+					OutputDir:     serveDir,
+					IncludeDrafts: serveDrafts,
+					BaseURL:       "/",
+					Clean:         false,
+					ExtraHead:     server.LiveReloadScript,
+					RedirectsFile: serveRedirects,
+				}
+				b := builder.NewBuilder(opts)
+				res, err := b.Build()
+				if err != nil {
+					return err
+				}
+				log.Printf("[BUILD] Recompiled in %v (Posts: %d, Categories: %d)", res.Duration, res.TotalPosts, res.TotalCategories)
+				return nil
+			}
+
+			log.Println("[WATCH] Running initial compilation for watch mode...")
+			if err := doBuild(); err != nil {
+				return fmt.Errorf("initial build failed: %w", err)
+			}
+
 			watchDirs := []string{sourceDir, themeDir, pagesDir}
 			watcher, err := server.NewWatcher(watchDirs, 200*time.Millisecond, func() {
 				if err := doBuild(); err != nil {
 					log.Printf("[BUILD ERROR] %v", err)
 					return
 				}
-				// 브라우저에 새로고침 신호 브로드캐스트
 				hub.Broadcast("reload")
 			})
 			if err != nil {
@@ -75,19 +82,20 @@ var serveCmd = &cobra.Command{
 			log.Printf("[WATCHER] Watching for changes in %v", watchDirs)
 		}
 
-		// 3. 로컬 HTTP 서버 구동
+		// 3. 로컬 HTTP 서버 구동 (순수 정적 서빙)
 		addr := fmt.Sprintf("%s:%d", serveBind, servePort)
-		fmt.Printf("\n🚀 Local test server running at: http://%s\n", addr)
+		fmt.Printf("\n🚀 Serving %q at: http://%s\n", serveDir, addr)
 		fmt.Println("   Press Ctrl+C to stop.")
 
-		return server.StartLocalServer(addr, distDir, hub)
+		return server.StartLocalServer(addr, serveDir, hub)
 	},
 }
 
 func init() {
 	serveCmd.Flags().IntVarP(&servePort, "port", "p", 8080, "Port to bind local server to")
 	serveCmd.Flags().StringVarP(&serveBind, "bind", "b", "127.0.0.1", "Host address to bind to")
-	serveCmd.Flags().BoolVarP(&serveDrafts, "drafts", "D", true, "Include draft posts in local preview")
-	serveCmd.Flags().BoolVar(&noWatch, "no-watch", false, "Disable file watching and Live Reload")
+	serveCmd.Flags().StringVarP(&serveDir, "dir", "d", "dist", "Directory to serve static files from")
+	serveCmd.Flags().BoolVarP(&serveWatch, "watch", "w", false, "Enable file watcher and live reload compiler")
+	serveCmd.Flags().BoolVarP(&serveDrafts, "drafts", "D", true, "Include draft posts in watch mode")
 	serveCmd.Flags().StringVar(&serveRedirects, "redirects", "redirect.yaml", "Path to redirect configuration YAML file")
 }

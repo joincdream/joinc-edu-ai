@@ -1,0 +1,20 @@
+{{ define "content" }}
+<article class="max-w-4xl mx-auto py-6">
+  <!-- Page Header -->
+  <header class="mb-10 pb-6 border-b border-slate-200">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+      {{ .Post.Frontmatter.Title }}
+    </h1>
+    {{ if .Post.Frontmatter.Description }}
+    <p class="text-base text-slate-600 leading-relaxed">
+      {{ .Post.Frontmatter.Description }}
+    </p>
+    {{ end }}
+  </header>
+
+  <!-- Page Body -->
+  <div class="prose max-w-none">
+    {{ .Post.HTMLContent }}
+  </div>
+</article>
+{{ end }}

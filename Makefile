@@ -1,11 +1,11 @@
-.PHONY: all build serve dev test clean categories
+.PHONY: all build serve dev test clean categories deploy
 
 BIN_DIR := bin
 BIN := $(BIN_DIR)/site-cli
 SRC := tools/site-cli/cmd/site-cli
 
-# 테마 설정 (기본값: default, 예: make build THEME=default-light)
-THEME ?= default
+# 테마 설정 (기본값: default-light, 예: make build THEME=default)
+THEME ?= default-light
 THEME_DIR := $(if $(filter templates/%,$(THEME)),$(THEME),templates/$(THEME))
 
 all: build
@@ -44,3 +44,9 @@ test:
 clean:
 	@echo "==> Cleaning build artifacts..."
 	rm -rf dist $(BIN_DIR)
+
+# 7. GitHub Pages 배포 (테스트 및 빌드 후 원격 main 푸시)
+deploy: test build
+	@echo "==> Deploying to GitHub Pages (pushing to origin main)..."
+	git push origin main
+

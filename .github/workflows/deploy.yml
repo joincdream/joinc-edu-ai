@@ -30,8 +30,7 @@ jobs:
 
       - name: Build Static Site
         run: |
-          cd tools/site-cli && go build -o ../../bin/site-cli ./cmd/site-cli && cd ../..
-          ./bin/site-cli build --source posts --pages pages --theme templates/default --output dist
+          make build
           echo "www.joinc.co.kr" > dist/CNAME
 
       - name: Setup Pages

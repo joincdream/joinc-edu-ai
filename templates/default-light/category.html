@@ -10,7 +10,7 @@
       </div>
       <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
         <nav class="space-y-1.5">
-          <a href="/" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+          <a href="{{ .BaseURL }}" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:bg-slate-100 hover:text-slate-900">
             <span>{{ .Messages.Nav.all_posts }}</span>
           </a>
 
@@ -18,7 +18,7 @@
           {{ if .ActiveCategory }}{{ $activeSlug = .ActiveCategory.Slug }}{{ end }}
 
           {{ range .Categories }}
-          <a href="/category/{{ .Slug }}/" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ if eq .Slug $activeSlug }}bg-blue-50 text-blue-700 border border-blue-200 font-semibold{{ else }}text-slate-600 hover:bg-slate-100 hover:text-slate-900{{ end }}">
+          <a href="{{ $.BaseURL }}category/{{ .Slug }}/" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ if eq .Slug $activeSlug }}bg-blue-50 text-blue-700 border border-blue-200 font-semibold{{ else }}text-slate-600 hover:bg-slate-100 hover:text-slate-900{{ end }}">
             <span class="truncate">{{ .Name }}</span>
             <span class="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-600 font-mono">
               {{ .PostCount }}
@@ -34,7 +34,7 @@
   <main class="flex-1">
     <div class="mb-6 flex items-center justify-between h-8">
       <div class="flex items-center gap-3">
-        <a href="/" class="text-xs text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1">&larr; {{ .Messages.Common.back_to_list }}</a>
+        <a href="{{ .BaseURL }}" class="text-xs text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1">&larr; {{ .Messages.Common.back_to_list }}</a>
         <span class="text-slate-300">|</span>
         <h1 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
           <span>{{ if .ActiveCategory }}{{ .ActiveCategory.Name }}{{ else }}Category{{ end }}</span>
@@ -72,7 +72,7 @@
               </div>
 
               <h2 class="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2 leading-snug">
-                <a href="/posts/{{ .Slug }}/">
+                <a href="{{ $.BaseURL }}posts/{{ .Slug }}/">
                   {{ .Frontmatter.Title }}
                 </a>
               </h2>
@@ -100,7 +100,7 @@
               <div class="flex items-center gap-3 text-xs text-slate-400">
                 <span>{{ .Frontmatter.CreatedDate }}</span>
                 <span>&bull;</span>
-                <a href="/posts/{{ .Slug }}/" class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                <a href="{{ $.BaseURL }}posts/{{ .Slug }}/" class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                   {{ $.Messages.Card.read_more }} &rarr;
                 </a>
               </div>

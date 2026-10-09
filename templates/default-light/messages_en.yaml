@@ -15,7 +15,8 @@ nav:
   all_posts: "All Posts"
   categories_title: "Categories"
   tags_title: "Tags"
-  post_count_unit: "posts"
+  total_count_prefix: "Total "
+  post_count_unit: " posts"
 
 card:
   read_more: "Read More"
@@ -26,6 +27,8 @@ detail:
   author_name: "Sangbae Yoon"
   comments_title: "Comments & Discussions"
   mermaid_zoom_tip: "Click diagram to zoom in."
+  modal_title: "Diagram Fullscreen Zoom"
+  modal_close: "Close"
 
 empty:
   no_posts_found: "No tech posts found."

@@ -1,8 +1,13 @@
-.PHONY: all build serve dev test clean categories deploy
+.PHONY: all build serve dev test clean categories deploy install complexity complexity-cognit complexity-cyclo
 
 BIN_DIR := bin
 BIN := $(BIN_DIR)/site-cli
 SRC := tools/site-cli/cmd/site-cli
+INSTALL_DIR ?= $(HOME)/.local/bin
+
+# 복잡도 임계치 기준 (모범 사례: gocognit=20, gocyclo=15)
+COGNIT_THRESHOLD ?= 20
+CYCLO_THRESHOLD  ?= 15
 
 all: build
 
@@ -45,4 +50,25 @@ clean:
 deploy: test build
 	@echo "==> Deploying to GitHub Pages (pushing to origin main)..."
 	git push origin main
+
+# 8. 로컬 환경에 site-cli 설치 (~/.local/bin)
+install: $(BIN)
+	@echo "==> Installing $(BIN) to $(INSTALL_DIR)..."
+	@mkdir -p $(INSTALL_DIR)
+	@cp -f $(BIN) $(INSTALL_DIR)/
+	@echo "[SUCCESS] Installed site-cli to $(INSTALL_DIR)/site-cli"
+
+# 9. 인지 복잡도(Cognitive Complexity) 측정 (SonarSource 기준, 상위 10개 및 평균)
+complexity-cognit:
+	@echo "==> [Cognitive Complexity] gocognit (threshold: $(COGNIT_THRESHOLD), top 10 & avg)..."
+	@cd tools/site-cli && gocognit -top 10 -avg -ignore "_test\.go" .
+
+# 10. 순환 복잡도(Cyclomatic Complexity) 측정 (McCabe 기준, 상위 10개 및 평균)
+complexity-cyclo:
+	@echo "==> [Cyclomatic Complexity] gocyclo (threshold: $(CYCLO_THRESHOLD), top 10 & avg)..."
+	@cd tools/site-cli && gocyclo -top 10 -avg -ignore "_test\.go" .
+
+# 11. 복잡도 종합 측정 (Cognitive + Cyclomatic)
+complexity: complexity-cognit complexity-cyclo
+
 

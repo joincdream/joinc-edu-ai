@@ -217,3 +217,61 @@ Markdown documentation follows here.
 	})
 }
 
+func TestEngine_Multilingual(t *testing.T) {
+	tempTheme := t.TempDir()
+
+	// 1. messages.yaml (기본/한국어)
+	koMsg := `common:
+  site_title: "테스트 사이트"
+nav:
+  about: "소개"
+`
+	if err := os.WriteFile(filepath.Join(tempTheme, "messages.yaml"), []byte(koMsg), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// 2. messages_en.yaml (영문)
+	enMsg := `common:
+  site_title: "Test Site"
+nav:
+  about: "About"
+`
+	if err := os.WriteFile(filepath.Join(tempTheme, "messages_en.yaml"), []byte(enMsg), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	baseHTML := `{{ define "base" }}<!DOCTYPE html><html lang="{{ .CurrentLang }}"><head><title>{{ .Messages.Common.site_title }}</title></head><body><nav>{{ .Messages.Nav.about }}</nav>{{ block "content" . }}{{ end }}</body></html>{{ end }}`
+	indexHTML := `{{ define "content" }}<main>Content</main>{{ end }}`
+	if err := os.WriteFile(filepath.Join(tempTheme, "base.html"), []byte(baseHTML), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(tempTheme, "index.html"), []byte(indexHTML), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	eng, err := NewEngine(tempTheme)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// 한국어 렌더링 검증
+	var koBuf bytes.Buffer
+	koCtx := &model.TemplateContext{CurrentLang: "ko"}
+	if err := eng.RenderPage(&koBuf, "index.html", koCtx); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(koBuf.String(), "테스트 사이트") || !strings.Contains(koBuf.String(), "소개") {
+		t.Errorf("expected Korean messages in output: %s", koBuf.String())
+	}
+
+	// 영문 렌더링 검증
+	var enBuf bytes.Buffer
+	enCtx := &model.TemplateContext{CurrentLang: "en"}
+	if err := eng.RenderPage(&enBuf, "index.html", enCtx); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(enBuf.String(), "Test Site") || !strings.Contains(enBuf.String(), "About") {
+		t.Errorf("expected English messages in output: %s", enBuf.String())
+	}
+}
+

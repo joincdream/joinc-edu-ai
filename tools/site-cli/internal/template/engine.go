@@ -14,10 +14,11 @@ import (
 
 // Engine 로컬 파일시스템 기반 템플릿 컴파일러
 type Engine struct {
-	themeDir string
-	messages model.MessageBundle
-	design   *model.DesignTokens
-	funcMap  template.FuncMap
+	themeDir    string
+	messages    model.MessageBundle
+	messagesMap map[string]model.MessageBundle
+	design      *model.DesignTokens
+	funcMap     template.FuncMap
 }
 
 // NewEngine 주어진 테마 디렉터리로부터 템플릿 엔진을 초기화합니다.
@@ -31,7 +32,9 @@ func NewEngine(themeDir string) (*Engine, error) {
 		return nil, fmt.Errorf("template: theme path %q is not a directory", themeDir)
 	}
 
-	// 1. messages.yaml 로드
+	messagesMap := make(map[string]model.MessageBundle)
+
+	// 1. 기본 messages.yaml 로드 (한국어/기본)
 	msgPath := filepath.Join(themeDir, "messages.yaml")
 	msgBytes, err := os.ReadFile(msgPath)
 	if err != nil {
@@ -41,6 +44,29 @@ func NewEngine(themeDir string) (*Engine, error) {
 	var messages model.MessageBundle
 	if err := yaml.Unmarshal(msgBytes, &messages); err != nil {
 		return nil, fmt.Errorf("template: failed to parse messages YAML %q: %w", msgPath, err)
+	}
+	messagesMap["ko"] = messages
+
+	// 테마 디렉터리 내 추가 언어 번들 파일(messages_en.yaml 등) 자동 로드
+	entries, _ := os.ReadDir(themeDir)
+	for _, entry := range entries {
+		name := entry.Name()
+		if entry.IsDir() || !strings.HasPrefix(name, "messages_") || !strings.HasSuffix(name, ".yaml") {
+			continue
+		}
+		langCode := strings.TrimSuffix(strings.TrimPrefix(name, "messages_"), ".yaml")
+		langCode = strings.ToLower(strings.TrimSpace(langCode))
+		if langCode == "" {
+			continue
+		}
+
+		subBytes, subErr := os.ReadFile(filepath.Join(themeDir, name))
+		if subErr == nil {
+			var subBundle model.MessageBundle
+			if yamlErr := yaml.Unmarshal(subBytes, &subBundle); yamlErr == nil {
+				messagesMap[langCode] = subBundle
+			}
+		}
 	}
 
 	// 2. DESIGN.md 로드 (선택적)
@@ -74,15 +100,25 @@ func NewEngine(themeDir string) (*Engine, error) {
 	}
 
 	return &Engine{
-		themeDir: themeDir,
-		messages: messages,
-		design:   design,
-		funcMap:  funcMap,
+		themeDir:    themeDir,
+		messages:    messages,
+		messagesMap: messagesMap,
+		design:      design,
+		funcMap:     funcMap,
 	}, nil
 }
 
-// GetMessages 로드된 메시지 리소스 번들을 반환합니다.
+// GetMessages 로드된 기본 메시지 리소스 번들을 반환합니다.
 func (e *Engine) GetMessages() model.MessageBundle {
+	return e.messages
+}
+
+// GetMessagesFor 지정된 언어 코드의 메시지 번들을 반환합니다 (없으면 기본 메시지 번들 fallback).
+func (e *Engine) GetMessagesFor(lang string) model.MessageBundle {
+	lang = strings.ToLower(strings.TrimSpace(lang))
+	if bundle, exists := e.messagesMap[lang]; exists {
+		return bundle
+	}
 	return e.messages
 }
 
@@ -182,7 +218,11 @@ func (e *Engine) loadTemplate(pageName string) (*template.Template, error) {
 
 // RenderPage 주어진 템플릿 이름과 컨텍스트로 HTML을 렌더링합니다.
 func (e *Engine) RenderPage(w io.Writer, templateName string, ctx *model.TemplateContext) error {
-	ctx.Messages = e.messages
+	if ctx.CurrentLang != "" {
+		ctx.Messages = e.GetMessagesFor(ctx.CurrentLang)
+	} else if ctx.Messages.Common == nil {
+		ctx.Messages = e.messages
+	}
 	if ctx.Design == nil {
 		ctx.Design = e.design
 	}
@@ -202,7 +242,11 @@ func (e *Engine) RenderPage(w io.Writer, templateName string, ctx *model.Templat
 
 // RenderCustomTemplate 테마 외부의 커스텀 템플릿 파일(예: pages/about.html)과 base 레이아웃을 조합하여 렌더링합니다.
 func (e *Engine) RenderCustomTemplate(w io.Writer, templatePath string, ctx *model.TemplateContext) error {
-	ctx.Messages = e.messages
+	if ctx.CurrentLang != "" {
+		ctx.Messages = e.GetMessagesFor(ctx.CurrentLang)
+	} else if ctx.Messages.Common == nil {
+		ctx.Messages = e.messages
+	}
 	if ctx.Design == nil {
 		ctx.Design = e.design
 	}

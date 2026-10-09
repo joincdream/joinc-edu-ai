@@ -14,3 +14,23 @@ source: "posts"
 pages: "pages"
 output: "dist"
 redirects: "redirect.yaml"
+
+# 다국어(i18n) 설정
+i18n:
+  default_lang: "ko"
+  languages:
+    - code: "ko"
+      name: "한국어"
+      base_url: "/"
+      source_dir: "posts"
+      post_pattern: "*.md"
+      messages_file: "messages.yaml"
+      output_prefix: ""
+    - code: "en"
+      name: "English"
+      base_url: "/en/"
+      source_dir: "posts"
+      post_pattern: "*.en.md"
+      page_suffix: ".en"
+      messages_file: "messages_en.yaml"
+      output_prefix: "en"

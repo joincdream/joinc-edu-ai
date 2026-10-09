@@ -149,3 +149,99 @@ path_redirects:
 		t.Errorf("expected /new-path/ in path redirect HTML")
 	}
 }
+
+func TestBuilder_Build_Multilingual(t *testing.T) {
+	tempDist := t.TempDir()
+	tempPosts := t.TempDir()
+	tempPages := t.TempDir()
+	themeDir := filepath.Join("..", "..", "..", "..", "templates", "default-light")
+
+	// 1. 한국어 포스트 & 영문 포스트 생성
+	koPost := "---\ntitle: \"쿠버네티스 심층 분석\"\ncreated_date: 2026-10-09\ncategory: \"Cloud\"\n---\n한국어 본문입니다."
+	enPost := "---\ntitle: \"Kubernetes Deep Dive\"\ncreated_date: 2026-10-09\ncategory: \"Cloud\"\n---\nEnglish body content."
+	if err := os.WriteFile(filepath.Join(tempPosts, "2026-10-09-k8s-dive.md"), []byte(koPost), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(tempPosts, "2026-10-09-k8s-dive.en.md"), []byte(enPost), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// 2. 한국어 페이지 & 영문 페이지 생성
+	koAbout := `{{ define "content" }}<h1>소개</h1>{{ end }}`
+	enAbout := `{{ define "content" }}<h1>About Me</h1>{{ end }}`
+	if err := os.WriteFile(filepath.Join(tempPages, "about.html"), []byte(koAbout), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(tempPages, "about.en.html"), []byte(enAbout), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	opts := Options{
+		SourceDir: tempPosts,
+		PagesDir:  tempPages,
+		ThemeDir:  themeDir,
+		OutputDir: tempDist,
+		Clean:     true,
+	}
+
+	b := NewBuilder(opts)
+	res, err := b.Build()
+	if err != nil {
+		t.Fatalf("Multilingual Build() failed: %v", err)
+	}
+
+	if res.TotalPosts != 2 {
+		t.Errorf("expected 2 total posts (1 ko + 1 en), got %d", res.TotalPosts)
+	}
+
+	// 3. 한국어 메인 및 영문 메인 검증
+	koIndex, err := os.ReadFile(filepath.Join(tempDist, "index.html"))
+	if err != nil {
+		t.Fatalf("missing dist/index.html: %v", err)
+	}
+	if !strings.Contains(string(koIndex), "쿠버네티스 심층 분석") {
+		t.Errorf("missing Korean post title in dist/index.html")
+	}
+
+	enIndex, err := os.ReadFile(filepath.Join(tempDist, "en", "index.html"))
+	if err != nil {
+		t.Fatalf("missing dist/en/index.html: %v", err)
+	}
+	if !strings.Contains(string(enIndex), "Kubernetes Deep Dive") {
+		t.Errorf("missing English post title in dist/en/index.html")
+	}
+
+	// 4. 포스트 상세 페이지 검증
+	koPostHTML, err := os.ReadFile(filepath.Join(tempDist, "posts", "k8s-dive", "index.html"))
+	if err != nil {
+		t.Fatalf("missing dist/posts/k8s-dive/index.html: %v", err)
+	}
+	if !strings.Contains(string(koPostHTML), "한국어 본문입니다") {
+		t.Errorf("missing Korean body in post detail")
+	}
+
+	enPostHTML, err := os.ReadFile(filepath.Join(tempDist, "en", "posts", "k8s-dive", "index.html"))
+	if err != nil {
+		t.Fatalf("missing dist/en/posts/k8s-dive/index.html: %v", err)
+	}
+	if !strings.Contains(string(enPostHTML), "English body content") {
+		t.Errorf("missing English body in post detail")
+	}
+
+	// 5. 소개 페이지 검증
+	koAboutHTML, err := os.ReadFile(filepath.Join(tempDist, "about", "index.html"))
+	if err != nil {
+		t.Fatalf("missing dist/about/index.html: %v", err)
+	}
+	if !strings.Contains(string(koAboutHTML), "소개") {
+		t.Errorf("missing Korean about content")
+	}
+
+	enAboutHTML, err := os.ReadFile(filepath.Join(tempDist, "en", "about", "index.html"))
+	if err != nil {
+		t.Fatalf("missing dist/en/about/index.html: %v", err)
+	}
+	if !strings.Contains(string(enAboutHTML), "About Me") {
+		t.Errorf("missing English about content")
+	}
+}

@@ -127,10 +127,16 @@ func ParseFile(filePath string) (*model.Post, error) {
 
 // ExtractSlug 파일 경로에서 파일명을 기반으로 URL-Safe 슬러그를 추출합니다.
 // 예: "posts/deep-dive/2026-09-26-my-post.md" -> "my-post"
+// 예: "posts/deep-dive/2026-09-26-my-post.en.md" -> "my-post"
 func ExtractSlug(filePath string) string {
 	base := filepath.Base(filePath)
 	ext := filepath.Ext(base)
 	nameWithoutExt := strings.TrimSuffix(base, ext)
+
+	// 다국어 접미사(.en 등) 제거하여 원문과 동일 슬러그 유지
+	if strings.HasSuffix(nameWithoutExt, ".en") {
+		nameWithoutExt = strings.TrimSuffix(nameWithoutExt, ".en")
+	}
 
 	// 선행 날짜(YYYY-MM-DD-) 패턴 제거
 	cleaned := datePrefixRegex.ReplaceAllString(nameWithoutExt, "")

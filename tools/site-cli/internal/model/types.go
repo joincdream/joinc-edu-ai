@@ -114,6 +114,21 @@ type Post struct {
 	ReadingTimeMinutes int           `json:"reading_time_minutes"`
 }
 
+// Excerpt 요약 또는 본문 앞부분 반환
+func (p *Post) Excerpt() string {
+	if strings.TrimSpace(p.Frontmatter.Summary) != "" {
+		return p.Frontmatter.Summary
+	}
+	if strings.TrimSpace(p.Frontmatter.Description) != "" {
+		return p.Frontmatter.Description
+	}
+	clean := strings.TrimSpace(p.RawContent)
+	if len(clean) > 150 {
+		return clean[:150] + "..."
+	}
+	return clean
+}
+
 // Category 카테고리 색인 모델
 type Category struct {
 	Name      string  `json:"name"`
@@ -188,6 +203,12 @@ func Slugify(s string) string {
 	return s
 }
 
+// AlternateLink 다국어 SEO (hreflang) 태그 모델
+type AlternateLink struct {
+	Lang string
+	URL  string
+}
+
 // MessageBundle messages.yaml 매핑 모델
 type MessageBundle struct {
 	Common map[string]string `yaml:"common"`
@@ -196,6 +217,7 @@ type MessageBundle struct {
 	Detail map[string]string `yaml:"detail"`
 	Empty  map[string]string `yaml:"empty"`
 	Footer map[string]string `yaml:"footer"`
+	Banner map[string]string `yaml:"banner"`
 }
 
 // Get helper: 키 경로 또는 맵에서 안전하게 문자열 반환 (누락 시 fallback 반환)
@@ -214,6 +236,8 @@ func (m *MessageBundle) Get(section, key, fallback string) string {
 		targetMap = m.Empty
 	case "footer":
 		targetMap = m.Footer
+	case "banner":
+		targetMap = m.Banner
 	}
 
 	if targetMap != nil {
@@ -230,6 +254,9 @@ type TemplateContext struct {
 	SiteSubtitle   string
 	BaseURL        string
 	CurrentPath    string
+	CurrentLang    string                  // "ko" 또는 "en"
+	AlternateLangs []AlternateLink         // hreflang 메타 태그 목록
+	SwitchURL      map[string]template.URL // 언어별 상호 전환 URL (예: {"ko": "/", "en": "/en/"})
 	Messages       MessageBundle
 	Design         *DesignTokens
 	Categories     []*Category

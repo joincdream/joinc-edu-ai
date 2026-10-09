@@ -1,9 +1,16 @@
 {{ define "base" }}<!DOCTYPE html>
-<html lang="ko">
+<html lang="{{ if .CurrentLang }}{{ .CurrentLang }}{{ else }}ko{{ end }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ if .Post }}{{ .Post.Frontmatter.Title }} | {{ end }}{{ .Messages.Common.site_title }}</title>
+
+  {{ if .AlternateLangs }}
+  <!-- Multilingual SEO (hreflang) -->
+  {{ range .AlternateLangs }}
+  <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .URL }}" />
+  {{ end }}
+  {{ end }}
   
   <!-- Pretendard Font -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -66,11 +73,31 @@
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased selection:bg-blue-600 selection:text-white">
   
+  <!-- Browser Language Smart Recommendation Banner -->
+  <div id="i18n-banner" class="hidden bg-blue-50 border-b border-blue-200 text-blue-900 px-4 py-2 text-xs sm:text-sm">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span>🌐</span>
+        <span>English version is available for this content.</span>
+      </div>
+      <div class="flex items-center gap-2">
+        {{ if .SwitchURL }}
+        <a id="i18n-switch-btn" href="{{ index .SwitchURL "en" }}" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium text-xs transition-colors">
+          Switch to English
+        </a>
+        {{ end }}
+        <button id="i18n-dismiss-btn" class="text-blue-600 hover:text-blue-800 font-bold px-1.5 py-0.5 text-sm" aria-label="Dismiss">
+          &times;
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Navigation Header -->
   <header class="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="/" class="flex items-center gap-2 group">
+        <a href="{{ .BaseURL }}" class="flex items-center gap-2 group">
           <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
             AI
           </div>
@@ -85,10 +112,22 @@
         </a>
       </div>
 
-      <nav class="flex items-center gap-2">
-        <a href="/about/" class="px-3.5 py-1.5 text-sm font-medium transition-colors {{ if eq .CurrentPath "/about/" }}bg-blue-50 text-blue-700 border border-blue-200 rounded-lg font-semibold{{ else }}text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg{{ end }}">
+      <nav class="flex items-center gap-3">
+        <a href="{{ .BaseURL }}about/" class="px-3.5 py-1.5 text-sm font-medium transition-colors {{ if or (eq .CurrentPath "/about/") (eq .CurrentPath "/en/about/") }}bg-blue-50 text-blue-700 border border-blue-200 rounded-lg font-semibold{{ else }}text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg{{ end }}">
           {{ .Messages.Nav.about }}
         </a>
+
+        {{ if .SwitchURL }}
+        <!-- Language Switcher [ KO | EN ] -->
+        <div class="flex items-center bg-slate-100 p-0.5 rounded-lg text-xs font-semibold border border-slate-200">
+          <a href="{{ index .SwitchURL "ko" }}" class="px-2.5 py-1 rounded-md transition-all {{ if eq .CurrentLang "ko" }}bg-white text-blue-600 shadow-xs font-bold{{ else }}text-slate-500 hover:text-slate-900{{ end }}">
+            KO
+          </a>
+          <a href="{{ index .SwitchURL "en" }}" class="px-2.5 py-1 rounded-md transition-all {{ if eq .CurrentLang "en" }}bg-white text-blue-600 shadow-xs font-bold{{ else }}text-slate-500 hover:text-slate-900{{ end }}">
+            EN
+          </a>
+        </div>
+        {{ end }}
       </nav>
     </div>
   </header>
@@ -227,6 +266,37 @@
     } else {
       initKaTeX();
     }
+
+    // 4. Browser Language Detection & Smart Recommendation Banner
+    (function() {
+      const banner = document.getElementById("i18n-banner");
+      const dismissBtn = document.getElementById("i18n-dismiss-btn");
+      const switchBtn = document.getElementById("i18n-switch-btn");
+      if (!banner) return;
+
+      const currentLang = "{{ .CurrentLang }}";
+      const userLang = (navigator.language || navigator.userLanguage || "").toLowerCase();
+      const isEnBrowser = userLang.startsWith("en");
+      const isDismissed = localStorage.getItem("i18n_banner_dismissed") === "true";
+
+      // 한국어 페이지 접속 중이고, 브라우저가 영어이며, 이전에 닫지 않은 경우 배너 노출
+      if ((currentLang === "ko" || currentLang === "") && isEnBrowser && !isDismissed) {
+        banner.classList.remove("hidden");
+      }
+
+      if (dismissBtn) {
+        dismissBtn.addEventListener("click", function() {
+          banner.classList.add("hidden");
+          localStorage.setItem("i18n_banner_dismissed", "true");
+        });
+      }
+
+      if (switchBtn) {
+        switchBtn.addEventListener("click", function() {
+          localStorage.setItem("preferred_lang", "en");
+        });
+      }
+    })();
   </script>
 </body>
 </html>

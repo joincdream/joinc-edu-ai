@@ -59,6 +59,7 @@ func TestExtractSlug(t *testing.T) {
 		expected string
 	}{
 		{"posts/deep-dive/2026-09-26-agentic-workflow.md", "agentic-workflow"},
+		{"posts/deep-dive/2026-09-26-agentic-workflow.en.md", "agentic-workflow"},
 		{"posts/market-trends/2026-08-01-korean-제목-테스트.md", "korean-제목-테스트"},
 		{"posts/simple-post.md", "simple-post"},
 		{"2026-01-01.md", "2026-01-01"},

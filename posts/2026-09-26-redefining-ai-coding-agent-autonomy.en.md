@@ -1,6 +1,6 @@
 ---
-title: "Redefining Coding Agent Autonomy: Compounding Errors ($0.95^{10}$) and Control Harness Architecture"
-description: "Analyzing the gap between marketing rhetoric and software engineering reality through a compounding error model ($0.95^{10}$), presenting harness design principles to establish coding agents as production assets."
+title: "Redefining Coding Agent Autonomy: Compounding Errors (0.95¹⁰) and Control Harness Architecture"
+description: "Analyzing the gap between marketing rhetoric and software engineering reality through a compounding error model (0.95¹⁰), presenting harness design principles to establish coding agents as production assets."
 category: "Software Engineering"
 status: published
 date: 2026-09-26
@@ -13,11 +13,11 @@ created_date: 2026-09-26
 published_date: 2026-09-26
 ---
 
-# Redefining Coding Agent Autonomy: Compounding Errors ($0.95^{10}$) and Control Harness Architecture
+# Redefining Coding Agent Autonomy: Compounding Errors (0.95¹⁰) and Control Harness Architecture
 
 Whenever a new foundation model is announced, the tech industry repeats the familiar slogan: *"A single prompt will take you from idea to production deployment"* or *"The era of autonomous, unattended software engineering has arrived."* From the earliest LLM coding tools to state-of-the-art reasoning models like GPT-6 Astra, Claude 4.5 Sonnet, and Gemini 3 Developer, these rosy promises continue unabated.
 
-Yet for practicing engineers maintaining production systems, daily reality has grown more exhausting. While code generation speed has accelerated exponentially, the cost of verifying correctness, validating edge cases, and ensuring architectural invariants has surged just as drastically. In this article, we analyze the gap between marketing rhetoric and software engineering reality using an empirical compounding error model ($0.95^{10}$), and propose harness design principles to transform AI coding agents into reliable, production-grade engineering assets.
+Yet for practicing engineers maintaining production systems, daily reality has grown more exhausting. While code generation speed has accelerated exponentially, the cost of verifying correctness, validating edge cases, and ensuring architectural invariants has surged just as drastically. In this article, we analyze the gap between marketing rhetoric and software engineering reality using an empirical compounding error model (0.95¹⁰), and propose harness design principles to transform AI coding agents into reliable, production-grade engineering assets.
 
 ---
 
@@ -82,13 +82,13 @@ Here, we must recognize the **Cognitive Inversion** between problems AI solves b
 
 ---
 
-## 2. Mathematical Reality: The Compounding Error Model ($0.95^{10}$)
+## 2. Mathematical Reality: The Compounding Error Model (0.95¹⁰)
 
 Why do autonomous agents fail when tasked with multi-step workflows? The root cause is the mathematical law of **compounding probability in sequential execution**.
 
-Suppose an agent possesses an impressive **95% single-step accuracy ($p = 0.95$)** across file discovery, dependency analysis, code editing, and tool calling. If a task requires an end-to-end chain of 10 sequential sub-actions:
+Suppose an agent possesses an impressive **95% single-step accuracy (p = 0.95)** across file discovery, dependency analysis, code editing, and tool calling. If a task requires an end-to-end chain of 10 sequential sub-actions:
 
-$$P(\text{Success}) = p^{10} = 0.95^{10} \approx 0.5987 \; (59.87\%)$$
+$$P(\text{Success}) = p^{10} = 0.95^{10} \approx 0.5987 \quad (59.87\\%)$$
 
 Across 10 autonomous steps, the cumulative probability of success plunges to **less than 60%**. With 20 steps, it collapses below **35%**:
 

@@ -122,6 +122,11 @@ func (e *Engine) GetMessagesFor(lang string) model.MessageBundle {
 	return e.messages
 }
 
+// GetMessagesMap 로드된 모든 언어별 메시지 맵을 반환합니다.
+func (e *Engine) GetMessagesMap() map[string]model.MessageBundle {
+	return e.messagesMap
+}
+
 // GetDesign 로드된 디자인 시스템 토큰을 반환합니다 (없으면 nil).
 func (e *Engine) GetDesign() *model.DesignTokens {
 	return e.design

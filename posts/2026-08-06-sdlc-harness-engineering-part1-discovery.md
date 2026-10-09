@@ -69,7 +69,7 @@ graph TD
 
 * **백엔드 (`app/backend`)**: Go Gin / GORM / PostgreSQL 기반 RESTful API 백엔드 (`make test`, `golangci-lint` 센서)
 * **프론트엔드 (`app/frontend`)**: Astro / React 기반 CSR 정적 SPA 프론트엔드 (`tsc`, `eslint` 센서)
-* **설계 문서 파이프라인 (`app/docs`)**: `00_discovery` $\rightarrow$ `01_planning` $\rightarrow$ `02_design` $\rightarrow$ `04_wbs` $\rightarrow$ `05_operation`
+* **설계 문서 파이프라인 (`app/docs`)**: `00_discovery` → `01_planning` → `02_design` → `04_wbs` → `05_operation`
 
 ```mermaid
 graph LR

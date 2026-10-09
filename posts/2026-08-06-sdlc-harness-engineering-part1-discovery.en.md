@@ -69,7 +69,7 @@ The `app` project examined in this series is not a toy demo. It targets the **ac
 
 * **Backend (`app/backend`)**: Go Gin / GORM / PostgreSQL RESTful API backend (`make test`, `golangci-lint` validation sensors)
 * **Frontend (`app/frontend`)**: Astro / React CSR static SPA frontend (`tsc`, `eslint` validation sensors)
-* **Design Documentation Pipeline (`app/docs`)**: `00_discovery` $\rightarrow$ `01_planning` $\rightarrow$ `02_design` $\rightarrow$ `04_wbs` $\rightarrow$ `05_operation`
+* **Design Documentation Pipeline (`app/docs`)**: `00_discovery` → `01_planning` → `02_design` → `04_wbs` → `05_operation`
 
 ```mermaid
 graph LR

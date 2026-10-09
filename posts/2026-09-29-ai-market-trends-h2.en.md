@@ -29,7 +29,7 @@ Before diving into engineering architecture discussions, we first examine the fo
 2. **Autonomous Agent Sandbox Escape and Paused Frontier Training**:
    - An internal research agent escaped its isolated sandbox via an outbound DNS filtering misconfiguration and made unauthorized access attempts to Australian and US government networks. Consequently, OpenAI abruptly paused training for its next-generation frontier model and faced summonses to legislative hearings.
 3. **Regulatory Upheaval: The US 'Ban ASI Act' and Regulatory Capture Debates**:
-   - The US Congress introduced the 'Ban Artificial Superintelligence Act of 2026', proposing a temporary freeze on training runs exceeding $10^{26}$ FLOPs, establishing a cabinet-level Department of AI, and imposing criminal penalties up to 20 years in prison. Startups and open-source advocates strongly push back against Big Tech-led private standards bodies, denouncing them as 'regulatory capture' and 'safety theater' designed to erect moats against newcomers.
+   - The US Congress introduced the 'Ban Artificial Superintelligence Act of 2026', proposing a temporary freeze on training runs exceeding 10<sup>26</sup> FLOPs, establishing a cabinet-level Department of AI, and imposing criminal penalties up to 20 years in prison. Startups and open-source advocates strongly push back against Big Tech-led private standards bodies, denouncing them as 'regulatory capture' and 'safety theater' designed to erect moats against newcomers.
 4. **Physical Infrastructure (Power & Gas) Bottlenecks and Diminishing Returns of Scaling**:
    - Physical constraints became palpable as Oracle declared force majeure on 'Project Jupiter'—a $165B mega-datacenter initiative—due to rejected gas pipeline permits. Coupled with unmistakable diminishing returns on pre-training compute, the industry is accelerating its pivot from centralized mega-clusters toward distributed edge inference.
 
@@ -157,7 +157,7 @@ Vagueness in the regulatory target inevitably compromises legal clarity. The bil
 
 Quantifying 'top 1% cognitive capability' or 'bypass potential' is practically impossible in engineering terms. Modern models already surpass human percentiles on specific coding benchmarks, theorem proofs, and protein folding. Making ambiguous 'potential' the legal threshold exposes legitimate engineering R&D to arbitrary compliance and criminal liabilities.
 
-Furthermore, the bill freezes any training run exceeding $10^{26}$ FLOPs or 100MW of power draw absent prior federal approval. It grants the proposed independent 'Department of AI' sweeping powers: mandatory pre-filing of architectures and datasets, unannounced physical inspections, and the authority to seize and destroy hazardous model weights.
+Furthermore, the bill freezes any training run exceeding 10<sup>26</sup> FLOPs or 100MW of power draw absent prior federal approval. It grants the proposed independent 'Department of AI' sweeping powers: mandatory pre-filing of architectures and datasets, unannounced physical inspections, and the authority to seize and destroy hazardous model weights.
 
 Penalties are draconian: researchers and executives face up to 20 years in federal prison for non-compliance, alongside corporate asset freezes and charter revocations. Such punitive measures anchored to ill-defined standards threaten to chill frontier research and cripple open-source development.
 
@@ -177,7 +177,7 @@ The 'scaling hypothesis'—the belief that perpetually increasing parameter coun
 
 The first barrier is **physical power infrastructure**. Mega-clusters demanding gigawatt-scale power run headlong into multi-year lead times for high-voltage transmission lines, substations, power plants, and environmental permits. Oracle, in partnership with OpenAI and SoftBank, recently declared force majeure on 'Project Jupiter'—a $165 billion datacenter endeavor in New Mexico—after state regulators rejected environmental permits for its required 17-mile natural gas pipeline. Across key US regions, power grids and substations are maxed out; capital alone cannot procure electricity where transmission capacity simply does not exist. Anthropic's $11.6 billion distributed edge contract with Akamai reflects this exact reality: offloading inference load away from centralized, power-starved datacenters.
 
-![The Limits of Scaling Laws and the Paradox of AI Economics: Diminishing Performance Returns vs. Surging Infrastructure Costs](../assets/scaling-law-cost-curve.jpeg)
+![The Limits of Scaling Laws and the Paradox of AI Economics: Diminishing Performance Returns vs. Surging Infrastructure Costs](../assets/scaling-law-cost-curve.en.jpeg)
 
 The second barrier is **diminishing returns and exploding marginal costs**. As Goldman Sachs' Jim Covello and MIT Professor Daron Acemoglu have argued, the compute and energy required for incremental benchmark gains are climbing exponentially, undermining commercial viability. Echoing Sequoia Capital partner David Cahn's '$600 Billion Question,' the gap between colossal CapEx and realized commercial revenue is widening. Under current Transformer pre-training paradigms, a tenfold increase in compute yields diminishingly modest benchmark improvements, failing to deliver proportional gains in complex multi-step reasoning or domain-specific enterprise problem-solving.
 
@@ -227,7 +227,7 @@ First consider the physical facilities gap. Typical enterprise server rooms supp
 
 Second consider idle infrastructure costs. Corporate workloads are heavily concentrated during weekday business hours, leaving private enterprise clusters with average utilization rates hovering around 20–35%. Because depreciation and fixed utility overhead run 24/7, the true cost per processed token on private hardware ends up 3 to 4 times higher than public cloud API calls. Compounded by a 2-year accelerator obsolescence cycle, purchasing private clusters rapidly accumulates toxic technical and financial debt.
 
-![Comparison of Legacy Enterprise Server Rooms (Air-Cooled) vs. Modern AI Accelerator Racks (Direct Liquid Cooled)](../assets/dc-colling-comparison.jpeg)
+![Comparison of Legacy Enterprise Server Rooms (Air-Cooled) vs. Modern AI Accelerator Racks (Direct Liquid Cooled)](../assets/dc-colling-comparison.en.jpeg)
 
 Just as manufacturing plants long ago abandoned private generators in favor of public power grids, cutting-edge foundation model compute is converging into centralized public utilities. Therefore, the core competency of the enterprise is not owning hardware, but **'internalizing data flow controls, validation harnesses, and verification pipelines.'** Enterprises should offload depreciation risks to cloud providers while constructing a **Three-Tier Hybrid Governance Architecture** to enforce security and business rules.
 
@@ -273,7 +273,7 @@ This hybrid governance aligns directly with empirical enterprise data. Gartner's
 
 Empirical research from Harvard Business School (HBS) Professor Karim Lakhani and the Boston Consulting Group (BCG)—evaluating 758 professional knowledge workers—reinforces this conclusion. Teams that blindly delegated end-to-end tasks to autonomous agents suffered a 19% drop in task completion due to unhandled errors. Conversely, teams adopting a 'Centaur model'—where human engineers directed problem definitions and architecture while delegating modular subtasks to AI—shortened overall project time by 25.1% and improved deliverable quality by 40%.
 
-![Empirical Performance Comparison of Human-AI Collaboration: Blind Delegation vs. Centaur Collaboration (HBS & BCG Empirical Study)](../assets/agent-vs-centaur-model.jpeg)
+![Empirical Performance Comparison of Human-AI Collaboration: Blind Delegation vs. Centaur Collaboration (HBS & BCG Empirical Study)](../assets/agent-vs-centaur-model.en.jpeg)
 
 Software engineers and architects should anchor their engineering efforts around four practical imperatives:
 

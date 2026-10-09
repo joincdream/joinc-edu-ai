@@ -139,6 +139,8 @@ flowchart LR
 - 📐 [기술 요구사항 명세서 (TRD)](../architecture/technical-requirements.md)
 - 🏗️ [상세 설계서 (Detailed Design)](../architecture/detailed-design.md)
 - 🧭 [핵심 개발 원칙 (Principles)](../architecture/principles.md)
+- 📊 [시장 비교 분석 및 전략적 포지셔닝 (Competitive Analysis & Strategy)](../architecture/competitive-analysis-and-strategy.md)
+- ⚡ [Go Backend & Svelte 하이브리드 SSG 아키텍처 (Go & Svelte Architecture)](../architecture/go-backend-svelte-architecture.md)
 
 ---
 

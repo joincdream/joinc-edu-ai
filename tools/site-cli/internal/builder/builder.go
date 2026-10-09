@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
@@ -153,46 +154,63 @@ func (b *Builder) Build() (*Result, error) {
 		return nil, fmt.Errorf("builder: failed to init template engine: %w", err)
 	}
 
-	// 7. 한국어 기본 사이트 렌더링 (dist/)
-	if err := b.renderSite(engine, converter, &langRenderConfig{
-		Lang:         "ko",
-		BaseURL:      b.opts.BaseURL,
-		OutputDir:    b.opts.OutputDir,
-		Taxonomy:     koTaxonomy,
-		PeerTaxonomy: enTaxonomy,
-		ThisPostsMap: koSlugMap,
-		PeerPostsMap: enSlugMap,
-		ThisPagesMap: koPagesMap,
-		PeerPagesMap: enPagesMap,
-	}); err != nil {
-		return nil, fmt.Errorf("builder: failed to render Korean site: %w", err)
+	// 7. Svelte 하이브리드 SSG용 통합 데이터 번들 생성 및 내보내기 (최신순 정렬된 AllPosts 전달)
+	pages := b.CollectPagesData(converter)
+	bundle := b.BuildDataBundle(koTaxonomy.AllPosts, enTaxonomy.AllPosts, koTaxonomy, enTaxonomy, engine.GetMessagesMap(), pages)
+	dataCachePath := filepath.Join(b.opts.OutputDir, ".cache", "site-data.json")
+	if err := b.ExportSiteData(bundle, dataCachePath); err != nil {
+		return nil, fmt.Errorf("builder: exporting site data failed: %w", err)
+	}
+	_ = b.ExportSiteData(bundle, filepath.Join(".cache", "site-data.json"))
+
+	if b.isSvelteTheme() {
+		// Svelte 5 SSR 기반 정적 HTML 일괄 렌더링
+		if err := b.runSvelteSSG(dataCachePath, b.opts.OutputDir); err != nil {
+			return nil, fmt.Errorf("builder: svelte SSG build failed: %w", err)
+		}
+	} else {
+		// 기존 Go HTML 템플릿 기반 렌더링 (default-light 및 default 다크 테마 호환)
+		// 8. 한국어 기본 사이트 렌더링 (dist/)
+		if err := b.renderSite(engine, converter, &langRenderConfig{
+			Lang:         "ko",
+			BaseURL:      b.opts.BaseURL,
+			OutputDir:    b.opts.OutputDir,
+			Taxonomy:     koTaxonomy,
+			PeerTaxonomy: enTaxonomy,
+			ThisPostsMap: koSlugMap,
+			PeerPostsMap: enSlugMap,
+			ThisPagesMap: koPagesMap,
+			PeerPagesMap: enPagesMap,
+		}); err != nil {
+			return nil, fmt.Errorf("builder: failed to render Korean site: %w", err)
+		}
+
+		// 9. 영문 서브패스 사이트 렌더링 (dist/en/)
+		enOutputDir := filepath.Join(b.opts.OutputDir, "en")
+		if err := os.MkdirAll(enOutputDir, 0755); err != nil {
+			return nil, fmt.Errorf("builder: failed to create en output dir %q: %w", enOutputDir, err)
+		}
+		enBaseURL := "/en/"
+		if b.opts.BaseURL != "/" {
+			enBaseURL = strings.TrimSuffix(b.opts.BaseURL, "/") + "/en/"
+		}
+
+		if err := b.renderSite(engine, converter, &langRenderConfig{
+			Lang:         "en",
+			BaseURL:      enBaseURL,
+			OutputDir:    enOutputDir,
+			Taxonomy:     enTaxonomy,
+			PeerTaxonomy: koTaxonomy,
+			ThisPostsMap: enSlugMap,
+			PeerPostsMap: koSlugMap,
+			ThisPagesMap: enPagesMap,
+			PeerPagesMap: koPagesMap,
+		}); err != nil {
+			return nil, fmt.Errorf("builder: failed to render English site: %w", err)
+		}
 	}
 
-	// 8. 영문 서브패스 사이트 렌더링 (dist/en/)
-	enOutputDir := filepath.Join(b.opts.OutputDir, "en")
-	if err := os.MkdirAll(enOutputDir, 0755); err != nil {
-		return nil, fmt.Errorf("builder: failed to create en output dir %q: %w", enOutputDir, err)
-	}
-	enBaseURL := "/en/"
-	if b.opts.BaseURL != "/" {
-		enBaseURL = strings.TrimSuffix(b.opts.BaseURL, "/") + "/en/"
-	}
-
-	if err := b.renderSite(engine, converter, &langRenderConfig{
-		Lang:         "en",
-		BaseURL:      enBaseURL,
-		OutputDir:    enOutputDir,
-		Taxonomy:     enTaxonomy,
-		PeerTaxonomy: koTaxonomy,
-		ThisPostsMap: enSlugMap,
-		PeerPostsMap: koSlugMap,
-		ThisPagesMap: enPagesMap,
-		PeerPagesMap: koPagesMap,
-	}); err != nil {
-		return nil, fmt.Errorf("builder: failed to render English site: %w", err)
-	}
-
-	// 9. 에셋 복사 (templates/<theme>/assets/ -> dist/assets/)
+	// 10. 에셋 복사 (templates/<theme>/assets/ -> dist/assets/)
 	themeAssets := filepath.Join(b.opts.ThemeDir, "assets")
 	distAssets := filepath.Join(b.opts.OutputDir, "assets")
 	if info, err := os.Stat(themeAssets); err == nil && info.IsDir() {
@@ -201,7 +219,7 @@ func (b *Builder) Build() (*Result, error) {
 		}
 	}
 
-	// 10. 포스트 이미지 복사 (posts/assets/ -> dist/assets/images/)
+	// 11. 포스트 이미지 복사 (posts/assets/ -> dist/assets/images/)
 	postsAssets := filepath.Join(b.opts.SourceDir, "assets")
 	if info, err := os.Stat(postsAssets); err == nil && info.IsDir() {
 		if err := copyDir(postsAssets, filepath.Join(distAssets, "images")); err != nil {
@@ -209,7 +227,7 @@ func (b *Builder) Build() (*Result, error) {
 		}
 	}
 
-	// 10.5. 페이지 에셋 복사 (pages/assets/ -> dist/assets/pages/)
+	// 11.5. 페이지 에셋 복사 (pages/assets/ -> dist/assets/pages/)
 	pagesAssets := filepath.Join(b.opts.PagesDir, "assets")
 	if info, err := os.Stat(pagesAssets); err == nil && info.IsDir() {
 		if err := copyDir(pagesAssets, filepath.Join(distAssets, "pages")); err != nil {
@@ -217,7 +235,7 @@ func (b *Builder) Build() (*Result, error) {
 		}
 	}
 
-	// 11. 하위 호환 리다이렉트 페이지 생성
+	// 12. 하위 호환 리다이렉트 페이지 생성
 	if err := b.generateRedirects(); err != nil {
 		return nil, fmt.Errorf("builder: generating redirects failed: %w", err)
 	}
@@ -540,4 +558,34 @@ func copyFile(src, dest string) error {
 
 	_, err = io.Copy(out, in)
 	return err
+}
+
+// isSvelteTheme 해당 테마 디렉터리가 Svelte 5 SSG 테마인지 확인합니다.
+func (b *Builder) isSvelteTheme() bool {
+	ssgScript := filepath.Join(b.opts.ThemeDir, "scripts", "build-ssg.ts")
+	pkgJson := filepath.Join(b.opts.ThemeDir, "package.json")
+	if _, err := os.Stat(ssgScript); err == nil {
+		if _, err := os.Stat(pkgJson); err == nil {
+			return true
+		}
+	}
+	return false
+}
+
+// runSvelteSSG Svelte 5 SSR 기반 정적 HTML 일괄 렌더링 서브프로세스를 실행합니다.
+func (b *Builder) runSvelteSSG(dataPath, outDir string) error {
+	absData, err := filepath.Abs(dataPath)
+	if err != nil {
+		absData = dataPath
+	}
+	absOut, err := filepath.Abs(outDir)
+	if err != nil {
+		absOut = outDir
+	}
+
+	cmd := exec.Command("npm", "run", "build:ssg", "--", "--data", absData, "--out", absOut)
+	cmd.Dir = b.opts.ThemeDir
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }

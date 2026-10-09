@@ -48,17 +48,17 @@ func (t *TagList) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
 // Frontmatter 마크다운 상단 YAML 메타데이터
 type Frontmatter struct {
-	Title         string   `yaml:"title"`
-	Category      string   `yaml:"category"`
-	Tags          TagList  `yaml:"tags"`
-	CreatedDate   string   `yaml:"created_date"`
-	PublishedDate string   `yaml:"published_date"`
-	Summary       string   `yaml:"summary"`
-	Description   string   `yaml:"description"`
-	Thumbnail     string   `yaml:"thumbnail"`
-	Status        string   `yaml:"status"` // "published" 또는 "draft"
-	Draft         bool     `yaml:"draft"`  // draft: true 플래그 지원
-	PostID        int      `yaml:"post_id,omitempty"`
+	Title         string   `yaml:"title" json:"title"`
+	Category      string   `yaml:"category" json:"category"`
+	Tags          TagList  `yaml:"tags" json:"tags"`
+	CreatedDate   string   `yaml:"created_date" json:"created_date"`
+	PublishedDate string   `yaml:"published_date" json:"published_date"`
+	Summary       string   `yaml:"summary" json:"summary"`
+	Description   string   `yaml:"description" json:"description"`
+	Thumbnail     string   `yaml:"thumbnail" json:"thumbnail"`
+	Status        string   `yaml:"status" json:"status"` // "published" 또는 "draft"
+	Draft         bool     `yaml:"draft" json:"draft"`   // draft: true 플래그 지원
+	PostID        int      `yaml:"post_id,omitempty" json:"post_id,omitempty"`
 }
 
 // Validate Frontmatter 필수 필드 및 날짜 포맷 검증
@@ -211,13 +211,13 @@ type AlternateLink struct {
 
 // MessageBundle messages.yaml 매핑 모델
 type MessageBundle struct {
-	Common map[string]string `yaml:"common"`
-	Nav    map[string]string `yaml:"nav"`
-	Card   map[string]string `yaml:"card"`
-	Detail map[string]string `yaml:"detail"`
-	Empty  map[string]string `yaml:"empty"`
-	Footer map[string]string `yaml:"footer"`
-	Banner map[string]string `yaml:"banner"`
+	Common map[string]string `yaml:"common" json:"common"`
+	Nav    map[string]string `yaml:"nav" json:"nav"`
+	Card   map[string]string `yaml:"card" json:"card"`
+	Detail map[string]string `yaml:"detail" json:"detail"`
+	Empty  map[string]string `yaml:"empty" json:"empty"`
+	Footer map[string]string `yaml:"footer" json:"footer"`
+	Banner map[string]string `yaml:"banner" json:"banner"`
 }
 
 // Get helper: 키 경로 또는 맵에서 안전하게 문자열 반환 (누락 시 fallback 반환)

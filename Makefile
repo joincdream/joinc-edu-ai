@@ -1,4 +1,4 @@
-.PHONY: all build serve dev test clean categories deploy install complexity complexity-cognit complexity-cyclo
+.PHONY: all build build-svelte serve dev test clean categories deploy install complexity complexity-cognit complexity-cyclo
 
 BIN_DIR := bin
 BIN := $(BIN_DIR)/site-cli
@@ -12,7 +12,7 @@ CYCLO_THRESHOLD  ?= 15
 all: build
 
 # 1. 사이트 빌더 엔진 컴파일
-$(BIN):
+$(BIN): $(shell find tools/site-cli -name '*.go')
 	@mkdir -p $(BIN_DIR)
 	@echo "==> Compiling site-cli engine..."
 	@cd tools/site-cli && go build -o ../../$(BIN) ./cmd/site-cli
@@ -21,6 +21,11 @@ $(BIN):
 build: $(BIN)
 	@echo "==> Building static site..."
 	@$(BIN) build
+
+# 2.1. Svelte 5 하이브리드 SSG 테마 기반 정적 웹사이트 일괄 컴파일
+build-svelte: $(BIN)
+	@echo "==> Building static site with Svelte 5 SSG engine..."
+	@$(BIN) build --theme templates/default-svelte
 
 # 3. 로컬 정적 사이트 서빙 (재컴파일 없이 dist/ 디렉터리 순수 서빙)
 serve: $(BIN)

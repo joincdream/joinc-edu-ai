@@ -49,7 +49,7 @@ post_id: 4
 
 여기서 소개하는 **하네스(Harness)는** 마구(馬具)의 고삐나 배선 뭉치처럼, 이러한 상위 협업 패러다임을 실현하기 위해 파생된 **여러 기술적 프레임워크이자 아키텍처적 수단 중 하나일** 뿐입니다. 
 
-$$\text{Agent} = \text{Model (Brain)} + \text{Harness (Architecture \& Constraint)}$$
+$$\text{Agent} = \text{Model (Brain)} + \text{Harness (Architecture and Constraint)}$$
 
 LLM이 문제를 해결하는 '두뇌'라면, 하네스는 **그 두뇌가 현실의 물리적 인프라 및 비즈니스 데이터와 안전하게 상호작용할 수 있도록 규정하는 아키텍처적 안전 기둥입니다.**
 

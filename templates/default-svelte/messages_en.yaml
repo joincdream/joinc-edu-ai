@@ -1,0 +1,44 @@
+# UI Static Text & Label Resource Bundle (Default Light Theme - English)
+common:
+  site_title: "AI Info"
+  site_subtitle: "Enterprise AI & Software Engineering Tech Blog"
+  search_placeholder: "Search tech posts..."
+  read_time_suffix: "min read"
+  table_of_contents: "Table of Contents"
+  back_to_list: "Back to all posts"
+  copy_link: "Copy Link"
+  copy_success: "Link copied to clipboard!"
+  share: "Share"
+
+nav:
+  about: "About"
+  all_posts: "All Posts"
+  categories_title: "Categories"
+  tags_title: "Tags"
+  total_count_prefix: "Total "
+  post_count_unit: " posts"
+
+card:
+  read_more: "Read More"
+  published_prefix: "Published:"
+
+detail:
+  author_label: "Author:"
+  author_name: "Sangbae Yoon"
+  comments_title: "Comments & Discussions"
+  mermaid_zoom_tip: "Click diagram to zoom in."
+  modal_title: "Diagram Fullscreen Zoom"
+  modal_close: "Close"
+
+empty:
+  no_posts_found: "No tech posts found."
+  no_category_posts: "No posts found in this category."
+
+footer:
+  copyright: "© 2026 joinc.co.kr. All rights reserved."
+  powered_by: "Built with Static GitOps Engine & Hosted on GitHub Pages"
+
+banner:
+  detected_text: "🌐 English version is available for this content."
+  switch_btn: "Switch to English"
+  dismiss_btn: "Dismiss"
